@@ -1,0 +1,88 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}My Job Applications | HireHub{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-6 rounded-3xl shadow-xl space-y-4">
+        <h1 class="text-2xl font-black text-slate-900 dark:text-white">My Submitted Applications</h1>
+        <p class="text-xs text-slate-500">Track application progress, ATS match score evaluation, and scheduled interviews in real time.</p>
+        
+        <!-- STATUS FILTER TABS -->
+        <div class="flex flex-wrap gap-2 pt-2 text-xs font-bold">
+            <a href="?status=all" class="px-4 py-2 rounded-xl transition {% if status_filter == 'all' %}bg-indigo-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                All ({{ counts.all }})
+            </a>
+            <a href="?status=applied" class="px-4 py-2 rounded-xl transition {% if status_filter == 'applied' %}bg-sky-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Applied ({{ counts.applied }})
+            </a>
+            <a href="?status=under_review" class="px-4 py-2 rounded-xl transition {% if status_filter == 'under_review' %}bg-amber-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Under Review ({{ counts.under_review }})
+            </a>
+            <a href="?status=shortlisted" class="px-4 py-2 rounded-xl transition {% if status_filter == 'shortlisted' %}bg-purple-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Shortlisted ({{ counts.shortlisted }})
+            </a>
+            <a href="?status=interview_scheduled" class="px-4 py-2 rounded-xl transition {% if status_filter == 'interview_scheduled' %}bg-indigo-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Interviews ({{ counts.interview_scheduled }})
+            </a>
+            <a href="?status=selected" class="px-4 py-2 rounded-xl transition {% if status_filter == 'selected' %}bg-emerald-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Selected ({{ counts.selected }})
+            </a>
+            <a href="?status=rejected" class="px-4 py-2 rounded-xl transition {% if status_filter == 'rejected' %}bg-rose-600 text-white{% else %}bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300{% endif %}">
+                Rejected ({{ counts.rejected }})
+            </a>
+        </div>
+    </div>
+
+    <!-- Applications Cards List -->
+    <div class="space-y-4">
+        {% for app in applications %}
+        <div class="glass-card p-6 rounded-3xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:shadow-xl transition">
+            <div class="space-y-2">
+                <div class="flex items-center space-x-3">
+                    <span class="px-3 py-1 rounded-full text-[11px] font-extrabold uppercase 
+                        {% if app.status == 'selected' %}bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300
+                        {% elif app.status == 'rejected' %}bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300
+                        {% elif app.status == 'interview_scheduled' %}bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300
+                        {% elif app.status == 'shortlisted' %}bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300
+                        {% else %}bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300{% endif %}">
+                        {{ app.get_status_display }}
+                    </span>
+                    <span class="text-xs text-slate-400">Applied on {{ app.applied_at|date:"M d, Y" }}</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">
+                    <a href="{% url 'job_detail' app.job.id %}" class="hover:text-indigo-600">{{ app.job.title }}</a>
+                </h3>
+                <p class="text-xs text-slate-500 font-medium">{{ app.job.company.name }} &bull; {{ app.job.location }}</p>
+            </div>
+
+            <div class="flex items-center space-x-4">
+                <!-- ATS Score badge -->
+                <div class="text-right">
+                    <span class="text-[10px] uppercase text-slate-400 font-bold block">ATS Match Score</span>
+                    <span class="font-extrabold text-sm text-indigo-600 dark:text-indigo-400">{{ app.ats_match_score }}% Fit</span>
+                </div>
+
+                {% if app.status == 'interview_scheduled' and app.interview %}
+                <a href="{{ app.interview.meet_link|default:'#' }}" target="_blank" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md">
+                    <i class="fa-solid fa-video mr-1"></i>Join Meet
+                </a>
+                {% endif %}
+
+                {% if app.status == 'selected' %}
+                <a href="{% url 'generate_offer_letter' app.id %}" class="px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md">
+                    <i class="fa-solid fa-file-contract mr-1"></i>View Offer
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="glass-card p-12 text-center rounded-3xl space-y-3">
+            <i class="fa-solid fa-folder-open text-3xl text-slate-400"></i>
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">No applications in this category yet.</p>
+            <a href="{% url 'job_list' %}" class="inline-block text-xs font-bold text-indigo-600 hover:underline">Browse open positions &rarr;</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

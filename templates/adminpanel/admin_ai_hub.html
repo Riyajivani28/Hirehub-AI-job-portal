@@ -1,0 +1,332 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Admin AI Suite Hub | HireHub Management Intelligence{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-8">
+    <!-- HERO HEADER -->
+    <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-indigo-500/20">
+        <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-xs font-black uppercase tracking-widest text-indigo-300">
+                <i class="fa-solid fa-robot text-amber-300"></i>
+                <span>Super Admin Control Center</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
+                Admin AI Suite Hub
+            </h1>
+            <p class="text-sm text-slate-300 leading-relaxed">
+                Intelligent automation for platform moderation, fake job fraud detection, sentiment analytics, company trust scoring, and automated broadcast announcements.
+            </p>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- METRICS GRID (4 HIGHLIGHT CARDS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-indigo-600 dark:text-indigo-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">AI Engine Status</span>
+                <i class="fa-solid fa-brain text-lg"></i>
+            </div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white">Active & Ready</h3>
+            <p class="text-[11px] text-slate-500">Google Gemini API REST Mode</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Positive Sentiment</span>
+                <i class="fa-solid fa-face-smile text-lg"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 dark:text-white">{{ sentiment_data.positive_pct }}%</h3>
+            <p class="text-[11px] text-slate-500">Based on user feedback entries</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-amber-600 dark:text-amber-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Fraud Audited Jobs</span>
+                <i class="fa-solid fa-shield-cat text-lg"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 dark:text-white">{{ jobs_audit|length }} Active</h3>
+            <p class="text-[11px] text-slate-500">{{ system_health.flagged_jobs }} listings currently flagged</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-purple-600 dark:text-purple-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Visitor Traffic</span>
+                <i class="fa-solid fa-chart-line text-lg"></i>
+            </div>
+            <h3 class="text-xl font-black text-slate-900 dark:text-white">{{ system_health.visitor_traffic_volume }}</h3>
+            <p class="text-[11px] text-slate-500">Recorded database logs</p>
+        </div>
+    </div>
+
+    <!-- AI OUTPUT MODAL / DISPLAY RESULT IF POSTED -->
+    {% if ai_result %}
+    <div class="glass-card p-6 rounded-3xl border border-indigo-500/40 bg-gradient-to-br from-indigo-900/10 to-purple-900/10 shadow-2xl space-y-3">
+        <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-slate-900 dark:text-white text-base flex items-center space-x-2">
+                <i class="fa-solid fa-sparkles text-amber-400"></i>
+                <span>Generated AI Result Output</span>
+            </h3>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold">Processed</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900 text-slate-200 font-mono text-xs whitespace-pre-wrap leading-relaxed">
+            {{ ai_result }}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 10 CORE AI MODULES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- 1. 📊 AI PLATFORM ANALYTICS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    📊
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">1. AI Platform Analytics</h3>
+                    <p class="text-xs text-slate-500">Real-time ecosystem metrics & user growth</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Active Users</span>
+                    <span class="text-base font-black text-slate-900 dark:text-white">{{ system_health.active_users }}</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/60">
+                    <span class="text-slate-400 block text-[10px] uppercase font-bold">Active Vacancies</span>
+                    <span class="text-base font-black text-slate-900 dark:text-white">{{ system_health.active_jobs }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. 🚨 FRAUD / FAKE JOB DETECTION -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 dark:bg-rose-950 dark:text-rose-300 flex items-center justify-center font-bold text-lg">
+                    🚨
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">2. Fraud & Scam Detection</h3>
+                    <p class="text-xs text-slate-500">Automated risk scoring on job listings</p>
+                </div>
+            </div>
+            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {% for item in jobs_audit %}
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-bold text-slate-900 dark:text-white block">{{ item.job.title }}</span>
+                        <span class="text-[10px] text-slate-400">{{ item.job.company.name }}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase
+                            {% if item.risk_level == 'High' %}bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300
+                            {% elif item.risk_level == 'Medium' %}bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300
+                            {% else %}bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300{% endif %}">
+                            {{ item.risk_score }}% {{ item.risk_level }} Risk
+                        </span>
+                        <a href="{% url 'admin_job_action' item.job.id 'flag_fake' %}" class="p-1.5 rounded-lg bg-rose-600 text-white font-bold hover:bg-rose-700 text-[10px]" title="Flag Job">
+                            <i class="fa-solid fa-flag"></i>
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="text-xs text-slate-400 italic">No job postings found to audit.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 3. 🛡 AI CONTENT MODERATION -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-300 flex items-center justify-center font-bold text-lg">
+                    🛡
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">3. AI Content Moderation</h3>
+                    <p class="text-xs text-slate-500">Spam & policy violation monitoring</p>
+                </div>
+            </div>
+            <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 text-xs font-medium border border-emerald-200/60 dark:border-emerald-800">
+                <i class="fa-solid fa-circle-check text-sm mr-1"></i>
+                System Content Filter Status: <strong>Clean (Zero Profanity Violations Detected)</strong>
+            </div>
+        </div>
+
+        <!-- 4. 🏢 COMPANY VERIFICATION ASSISTANT -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300 flex items-center justify-center font-bold text-lg">
+                    🏢
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">4. Company Verification Assistant</h3>
+                    <p class="text-xs text-slate-500">Employer domain & detail trust scoring</p>
+                </div>
+            </div>
+            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {% for item in companies_audit %}
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex justify-between items-center text-xs">
+                    <div>
+                        <span class="font-bold text-slate-900 dark:text-white block">{{ item.company.name }}</span>
+                        <span class="text-[10px] text-slate-400">{{ item.company.hr_contact_email }}</span>
+                    </div>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                        Trust Score: {{ item.trust_score }}%
+                    </span>
+                </div>
+                {% empty %}
+                <p class="text-xs text-slate-400 italic">No employer profiles to evaluate.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 5. 📢 AI ANNOUNCEMENT GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-300 flex items-center justify-center font-bold text-lg">
+                    📢
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">5. AI Announcement Generator</h3>
+                    <p class="text-xs text-slate-500">Generate & auto-publish system updates</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_announcement">
+                <div>
+                    <label class="text-[11px] font-bold text-slate-700 dark:text-slate-300 block mb-1">Announcement Topic</label>
+                    <input type="text" name="topic" placeholder="e.g. Platform maintenance or new feature release" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-medium dark:text-white border-0">
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center space-x-2 text-xs font-bold text-slate-700 dark:text-slate-300">
+                        <input type="checkbox" name="auto_publish" value="true" checked class="rounded text-indigo-600">
+                        <span>Auto-publish to Broadcast List</span>
+                    </label>
+                    <button type="submit" class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 shadow-md transition">
+                        Generate & Publish
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 6. 📈 SYSTEM HEALTH MONITOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                    📈
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">6. System Health Monitor</h3>
+                    <p class="text-xs text-slate-500">Live operational & latency telemetry</p>
+                </div>
+            </div>
+            <div class="space-y-2 text-xs">
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex justify-between">
+                    <span class="text-slate-500 font-medium">Database Connection</span>
+                    <span class="font-bold text-emerald-600">{{ system_health.db_status }}</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex justify-between">
+                    <span class="text-slate-500 font-medium">AI Engine Service</span>
+                    <span class="font-bold text-indigo-600">{{ system_health.ai_engine_status }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. 📑 AI REPORT GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 dark:bg-pink-950 dark:text-pink-300 flex items-center justify-center font-bold text-lg">
+                    📑
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">7. Executive Report Generator</h3>
+                    <p class="text-xs text-slate-500">Comprehensive platform analytics summary</p>
+                </div>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_executive_report">
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-pink-600 text-white font-bold text-xs hover:bg-pink-700 shadow-md transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Generate Executive Platform Report</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- 8. 😊 FEEDBACK & SENTIMENT ANALYSIS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300 flex items-center justify-center font-bold text-lg">
+                    😊
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">8. Feedback & Sentiment Analysis</h3>
+                    <p class="text-xs text-slate-500">NLP sentiment categorization</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                <div class="p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50">
+                    <span class="block text-lg font-black text-emerald-600">{{ sentiment_data.positive_pct }}%</span>
+                    <span class="text-[10px] font-bold text-slate-500">Positive</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                    <span class="block text-lg font-black text-slate-600 dark:text-slate-300">{{ sentiment_data.neutral_pct }}%</span>
+                    <span class="text-[10px] font-bold text-slate-500">Neutral</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-rose-50 dark:bg-rose-950/50">
+                    <span class="block text-lg font-black text-rose-600">{{ sentiment_data.negative_pct }}%</span>
+                    <span class="text-[10px] font-bold text-slate-500">Negative</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 9. 🔍 USER ACTIVITY INSIGHTS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    🔍
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">9. User Activity Insights</h3>
+                    <p class="text-xs text-slate-500">Behavior patterns & peak usage times</p>
+                </div>
+            </div>
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Traffic data reveals peak activity during <strong>10:00 AM - 4:00 PM IST</strong>. Most requested features include ATS Score Calculator & Employer Applicant Management.
+            </p>
+        </div>
+
+        <!-- 10. 📧 AI BROADCAST MESSAGE GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-300 flex items-center justify-center font-bold text-lg">
+                    📧
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">10. AI Broadcast Message Generator</h3>
+                    <p class="text-xs text-slate-500">Targeted email campaign drafting</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_broadcast">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" name="subject" placeholder="Email Subject" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <select name="target_audience" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                        <option value="jobseekers">Jobseekers</option>
+                        <option value="employers">Employers</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs hover:bg-purple-700 shadow-md transition">
+                    Draft Broadcast Copy
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

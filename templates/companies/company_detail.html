@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ company.name }} | Employer Profile | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header -->
+        <div class="glass-card p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+            <div class="flex items-center space-x-6">
+                <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-black text-3xl flex items-center justify-center shadow-lg">
+                    {{ company.name|slice:":1" }}
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="text-3xl font-black text-slate-900 dark:text-white">{{ company.name }}</h1>
+                        {% if company.is_verified_badge %}
+                        <i class="fa-solid fa-circle-check text-indigo-500 text-xl" title="Verified Badge"></i>
+                        {% endif %}
+                    </div>
+                    <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 mt-1">{{ company.industry }} &bull; {{ company.city }}, {{ company.country }}</p>
+                    {% if company.website %}
+                    <a href="{{ company.website }}" target="_blank" class="text-xs text-slate-500 hover:text-indigo-600 flex items-center space-x-1 mt-1 font-medium">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>{{ company.website }}</span>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if user.is_authenticated and user == company.employer %}
+            <a href="{% url 'company_edit' %}" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm">
+                Edit Company Settings
+            </a>
+            {% endif %}
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 space-y-8">
+                <!-- About Company -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Company Overview</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ company.description }}</p>
+                </div>
+
+                <!-- Active Jobs -->
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Active Positions at {{ company.name }}</h3>
+                    <div class="space-y-4">
+                        {% for j in active_jobs %}
+                        <div class="p-5 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-base text-slate-900 dark:text-white">{{ j.title }}</h4>
+                                <p class="text-xs text-slate-500">{{ j.location }} &bull; ₹{{ j.salary_min|floatformat:0 }} - ₹{{ j.salary_max|floatformat:0 }}</p>
+                            </div>
+                            <a href="{% url 'job_detail' j.id %}" class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-bold text-xs">View Role</a>
+                        </div>
+                        {% empty %}
+                        <p class="text-xs text-slate-400 italic">No open positions posted at this moment.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Details -->
+            <div class="space-y-6">
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base border-b border-slate-100 dark:border-slate-800 pb-3">Corporate Headquarters</h4>
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <span class="text-slate-400 font-bold block">Address</span>
+                            <span class="text-slate-800 dark:text-slate-200">{{ company.address }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-bold block">HR Manager</span>
+                            <span class="text-slate-800 dark:text-slate-200">{{ company.hr_contact_name }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-bold block">Recruitment Email</span>
+                            <span class="text-indigo-600 dark:text-indigo-400 font-bold">{{ company.hr_contact_email }}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 font-bold block">Contact Phone</span>
+                            <span class="text-slate-800 dark:text-slate-200">{{ company.hr_contact_phone }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

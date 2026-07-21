@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Apply for {{ job.title }} | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+        <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+            <div class="space-y-2">
+                <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Application Submission</span>
+                <h1 class="text-2xl font-black text-slate-900 dark:text-white">Applying for {{ job.title }}</h1>
+                <p class="text-xs text-slate-500 font-semibold">{{ job.company.name }} &bull; {{ job.location }}</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Resume Selection -->
+                <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 space-y-3">
+                    <h4 class="font-bold text-sm text-slate-900 dark:text-white">Resume File Selection</h4>
+                    {% if profile and profile.resume %}
+                    <div class="flex items-center space-x-2 text-xs text-indigo-600 dark:text-indigo-400 font-bold">
+                        <i class="fa-solid fa-file-pdf text-rose-500 text-base"></i>
+                        <span>Using Default Profile Resume: {{ profile.resume.name }}</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Or choose a custom resume for this specific position below:</p>
+                    {% endif %}
+                    {{ form.resume }}
+                </div>
+
+                <!-- Cover Letter -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Cover Letter / Note To Recruiter</label>
+                    {{ form.cover_letter }}
+                </div>
+
+                <div class="pt-4 flex justify-between items-center border-t border-slate-200 dark:border-slate-800">
+                    <a href="{% url 'job_detail' job.id %}" class="text-xs font-bold text-slate-500 hover:underline">Cancel Application</a>
+                    <button type="submit" class="px-8 py-3 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white font-bold text-sm shadow-xl hover:opacity-95 transition">
+                        Submit Job Application &rarr;
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

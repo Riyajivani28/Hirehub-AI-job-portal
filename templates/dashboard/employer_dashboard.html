@@ -1,0 +1,104 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Employer Recruiter Dashboard | HireHub{% endblock %}
+
+{% block dashboard_content %}
+<!-- Welcome Banner -->
+                <div class="rounded-3xl bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 p-8 text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold uppercase">Employer Recruiter Panel</span>
+                        <h1 class="text-3xl font-black">{{ company.name }} Hiring Portal</h1>
+                        <p class="text-xs text-white/80">Manage active openings, schedule interviews, and evaluate candidate ATS match fits.</p>
+                    </div>
+                    <a href="{% url 'post_job' %}" class="px-6 py-3 rounded-2xl bg-white text-purple-700 font-bold text-xs shadow-lg hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-plus mr-1"></i>Post New Job Vacancy
+                    </a>
+                </div>
+
+                <!-- 4 STAT CARDS -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="glass-card p-5 rounded-3xl space-y-1">
+                        <div class="w-10 h-10 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-lg mb-2">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.active_jobs_count }}</span>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Active Openings</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-3xl space-y-1">
+                        <div class="w-10 h-10 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-lg mb-2">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.total_applications }}</span>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Total Applicants</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-3xl space-y-1">
+                        <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg mb-2">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.scheduled_interviews }}</span>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Interviews Set</p>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-3xl space-y-1">
+                        <div class="w-10 h-10 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg mb-2">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.total_views }}</span>
+                        <p class="text-[11px] font-bold text-slate-400 uppercase">Job Views</p>
+                    </div>
+                </div>
+
+                <!-- MY POSTED JOBS TABLE -->
+                <div class="glass-card rounded-3xl p-6 space-y-4 shadow-xl">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-lg">Active Job Vacancies</h3>
+                        <a href="{% url 'employer_applications' %}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">View Candidate Pool &rarr;</a>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800 pb-2">
+                                    <th class="py-3 px-2">Job Title</th>
+                                    <th class="py-3 px-2">Job Type</th>
+                                    <th class="py-3 px-2">Applicants</th>
+                                    <th class="py-3 px-2">Views</th>
+                                    <th class="py-3 px-2">Status</th>
+                                    <th class="py-3 px-2 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                                {% for job in my_jobs %}
+                                <tr>
+                                    <td class="py-3 px-2">
+                                        <a href="{% url 'job_detail' job.id %}" class="font-bold text-slate-900 dark:text-white hover:text-indigo-600">{{ job.title }}</a>
+                                        <p class="text-[10px] text-slate-400">{{ job.created_at|date:"M d, Y" }}</p>
+                                    </td>
+                                    <td class="py-3 px-2 uppercase text-[10px] font-bold text-slate-500">{{ job.get_job_type_display }}</td>
+                                    <td class="py-3 px-2 font-bold text-indigo-600">{{ job.applications_count }}</td>
+                                    <td class="py-3 px-2 font-semibold text-slate-600 dark:text-slate-400">{{ job.views_count }}</td>
+                                    <td class="py-3 px-2">
+                                        {% if job.is_active %}
+                                        <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px]">Active</span>
+                                        {% else %}
+                                        <span class="px-2 py-0.5 rounded bg-slate-200 text-slate-600 dark:bg-slate-800 font-bold text-[10px]">Closed</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="py-3 px-2 text-right space-x-2">
+                                        <a href="{% url 'edit_job' job.id %}" class="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold hover:text-indigo-600">Edit</a>
+                                        <a href="{% url 'toggle_job_status' job.id %}" class="px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold hover:text-rose-600">Toggle</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="6" class="py-6 text-center text-slate-400 italic">No job postings created yet. Click "Post New Job Vacancy" to publish one.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+{% endblock %}

@@ -1,0 +1,669 @@
+{% extends 'base/base.html' %}
+
+{% block title %}AI Career Tips & Growth Hub | HireHub Talent Engine{% endblock %}
+
+{% block content %}
+<div class="py-12 bg-[#0B0B0B]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        
+        <!-- HERO HEADER BANNER -->
+        <div class="relative overflow-hidden glass-card rounded-3xl p-8 sm:p-12 border border-[#2C2C2C] shadow-2xl bg-gradient-to-br from-[#111111] via-[#171717] to-[#0B0B0B]">
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-gradient-to-tr from-[#D4AF37]/20 to-[#F4C430]/10 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="relative z-10 max-w-3xl space-y-4">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full gold-badge text-xs font-bold uppercase tracking-widest">
+                    <i class="fa-solid fa-graduation-cap text-[#D4AF37]"></i>
+                    <span>2026 Enterprise Career Intelligence</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+                    Accelerate Your Tech Career With <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#D4AF37] via-[#F4C430] to-[#AA7C11]">AI-Driven Guidance</span>
+                </h1>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Proven resume strategies, interview frameworks, salary benchmarks, and tech learning roadmaps curated by senior tech leaders and AI recruiters.
+                </p>
+                <div class="pt-2 flex flex-wrap gap-4 items-center">
+                    <a href="{% url 'ai_ats_score' %}" class="gold-btn px-6 py-3 text-black text-xs sm:text-sm font-extrabold shadow-lg inline-flex items-center space-x-2">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span>Audit ATS Resume Score</span>
+                    </a>
+                    <a href="#faq" class="px-6 py-3 rounded-xl bg-[#111111] border border-[#2C2C2C] text-slate-300 hover:text-[#D4AF37] hover:border-[#D4AF37] text-xs sm:text-sm font-bold transition inline-flex items-center space-x-2">
+                        <i class="fa-solid fa-circle-question text-[#D4AF37]"></i>
+                        <span>Browse FAQs</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 12 PROFESSIONAL CAREER GUIDANCE CARDS GRID -->
+        <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-[#2C2C2C] pb-4">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">Core Modules</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Professional Career Playbooks</h2>
+                </div>
+                <p class="text-xs text-slate-400 mt-2 md:mt-0">12 Essential guides designed for software engineers, freshers, and tech managers.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1: ATS Resume Optimization -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-file-shield"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">ATS Strategy</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">1. ATS Resume Optimization</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Format your resume layout, headings, and keyword density to achieve 90%+ match scores on enterprise Applicant Tracking Systems.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>5 Min Read</span>
+                        <a href="{% url 'ai_ats_score' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Test ATS Score</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 2: Resume Writing Guide -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Resume Blueprint</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">2. Resume Writing Guide</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Formulate high-impact accomplishment bullets using action verbs and quantified metrics to double recruiter response rates.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>7 Min Read</span>
+                        <a href="{% url 'ai_resume_builder' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Build AI Resume</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 3: Cover Letter Tips -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-envelope-open-text"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Writing Craft</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">3. Cover Letter Tips</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Tailor personalized opening hooks and value propositions aligned directly with target company goals and job requirements.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>4 Min Read</span>
+                        <a href="{% url 'ai_resume_builder' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Generate Letter</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 4: Technical Interview Preparation -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Coding & System Design</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">4. Technical Interview Prep</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Master Data Structures, Algorithms, System Architecture, database indexing, and live whiteboarding exercises.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>10 Min Read</span>
+                        <a href="{% url 'ai_interview_generator' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Start Mock Prep</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 5: HR Interview Questions -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-user-tie"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Behavioral & Culture</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">5. HR Interview Mastery</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Answer "Tell me about yourself", conflict resolution scenarios, and long-term career aspirations using the STAR framework.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>6 Min Read</span>
+                        <a href="{% url 'ai_interview_generator' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>HR Question Generator</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 6: Salary Negotiation Guide -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Compensation</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">6. Salary Negotiation Guide</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Benchmark industry CTC bands, evaluate joining bonuses, equity grants, and negotiate counter-offers professionally.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>8 Min Read</span>
+                        <a href="{% url 'ai_career_chatbot' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Salary Estimator</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 7: LinkedIn Profile Optimization -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Personal Branding</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">7. LinkedIn Optimization</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Transform your headline, summary, and skills list to rank higher in recruiter searches and double inbound interview invites.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>5 Min Read</span>
+                        <a href="{% url 'ai_career_chatbot' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Profile Audit AI</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 8: GitHub Portfolio Best Practices -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-brands fa-github"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Code Portfolio</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">8. GitHub Portfolio Blueprint</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Build clean READMEs, architecture diagrams, live demo URLs, and modular full-stack projects that impress hiring teams.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>6 Min Read</span>
+                        <a href="{% url 'ai_skill_gap' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Portfolio Audit</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 9: Career Roadmap (Python, PHP, Full Stack, AI) -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-route"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Tech Roadmaps</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">9. Tech Career Roadmaps</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Step-by-step milestone roadmaps for Python, Django, PHP, React Full Stack, and Artificial Intelligence Engineering roles.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>9 Min Read</span>
+                        <a href="{% url 'ai_skill_gap' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>View Learning Roadmap</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 10: Freelancing & Remote Jobs -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Remote Work</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">10. Freelance & Remote Playbook</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Land global remote contracts in USD/Euro, structure client proposals, and set up effective async work routines.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>7 Min Read</span>
+                        <a href="{% url 'job_list' %}?job_type=remote" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Explore Remote Jobs</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 11: Internship & Freshers Guide -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Freshers & Entry</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">11. Freshers & Internship Guide</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Leverage university capstone projects, hackathon victories, and open-source contributions to land your first software role.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>5 Min Read</span>
+                        <a href="{% url 'job_list' %}?job_type=internship" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Find Entry Jobs</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Card 12: Workplace Communication & Soft Skills -->
+                <div class="glass-card rounded-3xl p-6 flex flex-col justify-between hover:shadow-2xl transition duration-300 border border-[#2C2C2C] group">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div class="w-12 h-12 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-xl group-hover:scale-110 transition">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase gold-badge">Soft Skills</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white group-hover:text-[#D4AF37] transition">12. Executive Soft Skills</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Develop active listening, sprint communication, technical writing, and stakeholder alignment to accelerate promotion.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-[#2C2C2C] mt-4 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400"><i class="fa-regular fa-clock mr-1 text-[#D4AF37]"></i>6 Min Read</span>
+                        <a href="{% url 'ai_career_chatbot' %}" class="inline-flex items-center text-xs font-extrabold text-[#D4AF37] hover:text-[#F4C430]">
+                            <span>Chat With Mentor</span>
+                            <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRENDING TECHNOLOGIES SECTION -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 border border-[#2C2C2C]">
+            <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-[#2C2C2C] pb-4">
+                <div>
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">In-Demand Stacks</span>
+                    <h2 class="text-2xl font-extrabold text-white mt-1">Trending Technologies 2026</h2>
+                </div>
+                <span class="text-xs text-slate-400 mt-2 md:mt-0"><i class="fa-solid fa-[#D4AF37] fa-chart-line mr-1 text-[#D4AF37]"></i>Updated Weekly</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+                <a href="{% url 'job_list' %}?keyword=Python" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-brands fa-python text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">Python</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+34% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=Django" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-solid fa-cubes text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">Django</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+28% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=Flask" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-solid fa-[#D4AF37] fa-pepper-hot text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">Flask</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+19% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=PHP" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-brands fa-php text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">PHP</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+22% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=AI" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-solid fa-brain text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">AI & LLMs</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+52% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=React" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-brands fa-react text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">React.js</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+41% Hires</span>
+                </a>
+                <a href="{% url 'job_list' %}?keyword=SQL" class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition text-center group">
+                    <i class="fa-solid fa-database text-2xl text-[#D4AF37] group-hover:scale-110 transition mb-2 block"></i>
+                    <span class="text-xs font-bold text-white block">PostgreSQL / SQL</span>
+                    <span class="text-[10px] text-emerald-400 font-semibold">+30% Hires</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- LATEST ARTICLES & HIRING TRENDS 2026 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Latest Career Articles (2 Cols) -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="border-b border-[#2C2C2C] pb-3">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">Recruiter Insights</span>
+                    <h2 class="text-2xl font-extrabold text-white mt-1">Latest Deep-Dive Career Articles</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <article class="glass-card p-6 rounded-3xl border border-[#2C2C2C] flex flex-col md:flex-row gap-6 items-start hover:border-[#D4AF37] transition">
+                        <div class="w-14 h-14 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-2xl flex-shrink-0">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <div class="space-y-2 flex-1">
+                            <div class="flex items-center space-x-2 text-xs text-slate-400">
+                                <span class="text-[#D4AF37] font-bold">AI Recruitment</span>
+                                <span>&bull;</span>
+                                <span>Published July 2026</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white hover:text-[#D4AF37] transition">
+                                How AI Resume Parsers Process Experience Years & Skill Tags
+                            </h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Modern AI Applicant Tracking Systems don't just search for keywords; they evaluate semantic context and project impact. Learn how to format bullet points for maximum AI match accuracy.
+                            </p>
+                            <a href="{% url 'ai_ats_score' %}" class="inline-flex items-center text-xs font-bold text-[#D4AF37] hover:underline pt-1">
+                                Read Full Article &rarr;
+                            </a>
+                        </div>
+                    </article>
+
+                    <article class="glass-card p-6 rounded-3xl border border-[#2C2C2C] flex flex-col md:flex-row gap-6 items-start hover:border-[#D4AF37] transition">
+                        <div class="w-14 h-14 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-2xl flex-shrink-0">
+                            <i class="fa-solid fa-briefcase"></i>
+                        </div>
+                        <div class="space-y-2 flex-1">
+                            <div class="flex items-center space-x-2 text-xs text-slate-400">
+                                <span class="text-[#D4AF37] font-bold">Full Stack Hiring</span>
+                                <span>&bull;</span>
+                                <span>Published July 2026</span>
+                            </div>
+                            <h3 class="text-lg font-bold text-white hover:text-[#D4AF37] transition">
+                                The 2026 Full Stack Developer Roadmap: Django + React + AI APIs
+                            </h3>
+                            <p class="text-xs text-slate-400 leading-relaxed">
+                                Companies are seeking engineers who can rapidly build LLM-augmented full-stack web platforms. Discover the exact tech stack combinations hiring managers prioritize.
+                            </p>
+                            <a href="{% url 'ai_skill_gap' %}" class="inline-flex items-center text-xs font-bold text-[#D4AF37] hover:underline pt-1">
+                                Read Full Article &rarr;
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Hiring Trends 2026 Sidebar (1 Col) -->
+            <div class="glass-card p-6 rounded-3xl border border-[#2C2C2C] space-y-6">
+                <div class="border-b border-[#2C2C2C] pb-3">
+                    <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">Market Outlook</span>
+                    <h2 class="text-xl font-extrabold text-white mt-1">Hiring Trends 2026</h2>
+                </div>
+
+                <ul class="space-y-4 text-xs">
+                    <li class="space-y-1">
+                        <span class="font-bold text-white block flex items-center">
+                            <i class="fa-solid fa-bolt text-[#D4AF37] mr-2"></i>Skill-First Evaluation
+                        </span>
+                        <p class="text-slate-400 leading-relaxed">78% of enterprise engineering teams prioritize verified GitHub repos over college prestige.</p>
+                    </li>
+                    <li class="space-y-1">
+                        <span class="font-bold text-white block flex items-center">
+                            <i class="fa-solid fa-[#D4AF37] fa-globe text-[#D4AF37] mr-2"></i>Global Async Remote
+                        </span>
+                        <p class="text-slate-400 leading-relaxed">Remote openings are shifting towards asynchronous documentation and self-guided autonomy.</p>
+                    </li>
+                    <li class="space-y-1">
+                        <span class="font-bold text-white block flex items-center">
+                            <i class="fa-solid fa-wand-magic-sparkles text-[#D4AF37] mr-2"></i>AI Coding Fluency
+                        </span>
+                        <p class="text-slate-400 leading-relaxed">Candidates using AI coding assistants demonstrate 40% faster sprint delivery times.</p>
+                    </li>
+                </ul>
+
+                <div class="p-4 rounded-2xl bg-[#111111] border border-[#2C2C2C] text-center">
+                    <span class="text-xs text-slate-300 block font-bold mb-2">Want Tailored Advice?</span>
+                    <a href="{% url 'ai_career_chatbot' %}" class="gold-btn w-full block py-2.5 text-black text-xs font-bold rounded-xl">
+                        Talk To AI Mentor
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESUME & INTERVIEW CHECKLISTS -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Resume Checklist -->
+            <div class="glass-card p-8 rounded-3xl border border-[#2C2C2C] space-y-6">
+                <div class="flex items-center space-x-3 border-b border-[#2C2C2C] pb-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">ATS Resume Checklist</h3>
+                        <p class="text-xs text-slate-400">Verify your resume before submitting to employers</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs text-slate-300">
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" checked class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Single-column, clean ATS-parseable layout (PDF format)</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" checked class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Quantified impact metrics (e.g., "Reduced latency by 40%")</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Includes job-description keywords (Python, Django, SQL)</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>No grammar or spelling errors; verified with AI audit tool</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Interview Checklist -->
+            <div class="glass-card p-8 rounded-3xl border border-[#2C2C2C] space-y-6">
+                <div class="flex items-center space-x-3 border-b border-[#2C2C2C] pb-4">
+                    <div class="w-10 h-10 rounded-xl bg-[#111111] border border-[#2C2C2C] text-[#D4AF37] flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Interview Day Checklist</h3>
+                        <p class="text-xs text-slate-400">Steps to execute 24 hours before your technical round</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3 text-xs text-slate-300">
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" checked class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Research company products, recent funding, and engineering blog</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" checked class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Prepare 3 STAR story scenarios for behavioral questions</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Test webcam, microphone, and IDE coding sandbox environment</span>
+                    </label>
+                    <label class="flex items-start space-x-3 p-3 rounded-xl bg-[#111111] border border-[#2C2C2C] cursor-pointer hover:border-[#D4AF37] transition">
+                        <input type="checkbox" class="mt-0.5 rounded text-[#D4AF37] focus:ring-[#D4AF37]">
+                        <span>Prepare 3 thoughtful questions to ask the interviewer</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOP CAREER RESOURCES -->
+        <div class="glass-card p-8 rounded-3xl space-y-6 border border-[#2C2C2C]">
+            <div class="border-b border-[#2C2C2C] pb-4">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">AI Power Tools</span>
+                <h2 class="text-2xl font-extrabold text-white mt-1">HireHub AI Career Toolkit</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="{% url 'ai_ats_score' %}" class="p-5 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition space-y-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-[#171717] text-[#D4AF37] flex items-center justify-center text-lg group-hover:bg-[#D4AF37] group-hover:text-black transition">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm group-hover:text-[#D4AF37] transition">ATS Score Calculator</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Calculate exact match percentage against job descriptions.</p>
+                </a>
+
+                <a href="{% url 'ai_resume_builder' %}" class="p-5 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition space-y-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-[#171717] text-[#D4AF37] flex items-center justify-center text-lg group-hover:bg-[#D4AF37] group-hover:text-black transition">
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm group-hover:text-[#D4AF37] transition">AI Resume Builder</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Build structured resumes optimized for tech hiring managers.</p>
+                </a>
+
+                <a href="{% url 'ai_skill_gap' %}" class="p-5 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition space-y-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-[#171717] text-[#D4AF37] flex items-center justify-center text-lg group-hover:bg-[#D4AF37] group-hover:text-black transition">
+                        <i class="fa-solid fa-brain"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm group-hover:text-[#D4AF37] transition">Skill Gap Analyzer</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Discover missing competencies and custom learning roadmaps.</p>
+                </a>
+
+                <a href="{% url 'ai_interview_generator' %}" class="p-5 rounded-2xl bg-[#111111] border border-[#2C2C2C] hover:border-[#D4AF37] transition space-y-3 group">
+                    <div class="w-10 h-10 rounded-xl bg-[#171717] text-[#D4AF37] flex items-center justify-center text-lg group-hover:bg-[#D4AF37] group-hover:text-black transition">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <h4 class="font-bold text-white text-sm group-hover:text-[#D4AF37] transition">AI Mock Interview</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Practice real-time technical and behavioral interview Q&As.</p>
+                </a>
+            </div>
+        </div>
+
+        <!-- FREQUENTLY ASKED QUESTIONS (FAQ) -->
+        <div id="faq" class="glass-card p-8 rounded-3xl space-y-6 border border-[#2C2C2C]">
+            <div class="border-b border-[#2C2C2C] pb-4">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-[#D4AF37]">Got Questions?</span>
+                <h2 class="text-2xl font-extrabold text-white mt-1">Frequently Asked Questions</h2>
+            </div>
+
+            <div class="space-y-4" x-data="{ open: null }">
+                <!-- FAQ Item 1 -->
+                <div class="rounded-2xl bg-[#111111] border border-[#2C2C2C] overflow-hidden">
+                    <button @click="open === 1 ? open = null : open = 1" class="w-full p-5 text-left font-bold text-sm text-white flex justify-between items-center hover:text-[#D4AF37] transition">
+                        <span>How does HireHub calculate my ATS Resume Match score?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-[#D4AF37] transition-transform" :class="{ 'rotate-180': open === 1 }"></i>
+                    </button>
+                    <div x-show="open === 1" class="px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-[#2C2C2C] pt-3">
+                        HireHub compares your uploaded resume text against active job vacancy descriptions using advanced natural language processing. It measures keyword overlap, required vs. actual skills, years of experience, and layout structure to compute an accurate match score.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="rounded-2xl bg-[#111111] border border-[#2C2C2C] overflow-hidden">
+                    <button @click="open === 2 ? open = null : open = 2" class="w-full p-5 text-left font-bold text-sm text-white flex justify-between items-center hover:text-[#D4AF37] transition">
+                        <span>Can freshers apply for senior software roles?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-[#D4AF37] transition-transform" :class="{ 'rotate-180': open === 2 }"></i>
+                    </button>
+                    <div x-show="open === 2" class="px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-[#2C2C2C] pt-3">
+                        While senior roles typically require 3-5+ years of production experience, freshers with exceptional open-source contributions, hackathon wins, or live full-stack projects can showcase their portfolio via our AI Skill Gap Analysis tool to demonstrate readiness.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="rounded-2xl bg-[#111111] border border-[#2C2C2C] overflow-hidden">
+                    <button @click="open === 3 ? open = null : open = 3" class="w-full p-5 text-left font-bold text-sm text-white flex justify-between items-center hover:text-[#D4AF37] transition">
+                        <span>How often are new job openings posted on HireHub?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-[#D4AF37] transition-transform" :class="{ 'rotate-180': open === 3 }"></i>
+                    </button>
+                    <div x-show="open === 3" class="px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-[#2C2C2C] pt-3">
+                        Verified employers post new vacancies daily. Once posted, positions immediately sync across all AI candidate matching tools, candidate recommendation engines, and public job listing feeds.
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="rounded-2xl bg-[#111111] border border-[#2C2C2C] overflow-hidden">
+                    <button @click="open === 4 ? open = null : open = 4" class="w-full p-5 text-left font-bold text-sm text-white flex justify-between items-center hover:text-[#D4AF37] transition">
+                        <span>Is the AI Career Counselor personalized to my database profile?</span>
+                        <i class="fa-solid fa-chevron-down text-xs text-[#D4AF37] transition-transform" :class="{ 'rotate-180': open === 4 }"></i>
+                    </button>
+                    <div x-show="open === 4" class="px-5 pb-5 text-xs text-slate-400 leading-relaxed border-t border-[#2C2C2C] pt-3">
+                        Yes! The HireHub AI Career Counselor reads your logged-in profile data (skills, experience, education, and resume details) to provide real-time, personalized guidance tailored to your specific experience tier.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAREER SUCCESS GOLDEN RULES BANNER -->
+        <div class="rounded-3xl bg-gradient-to-r from-[#171717] via-[#111111] to-[#171717] border border-[#D4AF37]/50 p-8 sm:p-12 text-center space-y-6 shadow-2xl">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#D4AF37] to-[#AA7C11] text-black flex items-center justify-center text-3xl font-black mx-auto shadow-lg">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div class="max-w-2xl mx-auto space-y-2">
+                <h3 class="text-2xl sm:text-3xl font-black text-white">Golden Rule of Technical Hiring</h3>
+                <p class="text-slate-300 text-xs sm:text-sm italic leading-relaxed">
+                    "Continuous skill progression, measurable project impact, and clear communication will always outweigh passive job applications."
+                </p>
+            </div>
+            <div class="pt-2">
+                <a href="{% url 'job_list' %}" class="gold-btn px-8 py-3.5 text-black font-extrabold text-sm inline-flex items-center space-x-2">
+                    <span>Browse Open Positions Now</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Simple Vanilla JS Accordion Fallback for FAQ if Alpine is not loaded -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('#faq button');
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const content = this.nextElementSibling;
+            if (content) {
+                const isHidden = content.style.display === 'none' || !content.style.display;
+                document.querySelectorAll('#faq button + div').forEach(div => div.style.display = 'none');
+                content.style.display = isHidden ? 'block' : 'none';
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

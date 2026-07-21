@@ -1,0 +1,234 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}ATS Resume Match Calculator | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-8">
+    <!-- HEADER -->
+    <div class="rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 p-8 text-white shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div class="space-y-2">
+            <span class="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 text-xs font-extrabold uppercase">ATS Intelligence Engine</span>
+            <h1 class="text-3xl font-black">ATS Resume Match Calculator</h1>
+            <p class="text-xs text-slate-300">Compare candidate resume skills against active job vacancy requirements to evaluate keyword match & ATS score.</p>
+        </div>
+    </div>
+
+    <!-- MAIN CALCULATOR FORM -->
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6 border border-slate-200/80 dark:border-slate-800">
+        <form method="POST" id="atsCalculatorForm" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- SELECT ACTIVE JOB DROPDOWN -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Active Job Opening (Loaded from Database)</label>
+                <select name="job_id" id="jobSelect" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white font-semibold">
+                    {% if active_jobs %}
+                    <option value="" data-description="" data-skills="" data-experience="">-- Choose Job Opening --</option>
+                    {% for j in active_jobs %}
+                    <option value="{{ j.id }}" 
+                            data-title="{{ j.title }}"
+                            data-company="{{ j.company.name }}"
+                            data-skills="{{ j.skills_required }}"
+                            data-experience="{{ j.experience_required }}"
+                            data-description="{{ j.description }}"
+                            {% if selected_job_id == j.id|stringformat:"s" %}selected{% endif %}>
+                        {{ j.title }} — {{ j.company.name }} ({{ j.location }} &bull; {{ j.get_job_type_display }})
+                    </option>
+                    {% endfor %}
+                    {% else %}
+                    <option value="" disabled selected>No Active Job Openings Available</option>
+                    {% endif %}
+                </select>
+            </div>
+
+            <!-- JOB DESCRIPTION TEXTAREA -->
+            <div>
+                <div class="flex justify-between items-center mb-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500">Target Job Description & Skills</label>
+                    <span class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold" id="autoFillBadge">Auto-fills on job selection</span>
+                </div>
+                <textarea name="jd_text" id="jdTextarea" rows="4" placeholder="Select a job above or paste specific job description & tech requirements..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">{{ jd_text }}</textarea>
+            </div>
+
+            <!-- CANDIDATE RESUME / PROFILE TEXT -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Your Candidate Resume / Profile Text</label>
+                <textarea name="resume_text" rows="4" placeholder="Paste your resume content, summary, and skill stack..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">{{ resume_text }}</textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-bold text-sm shadow-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-calculator text-lg"></i>
+                <span>Compute ATS Match Score & Save Analysis</span>
+            </button>
+        </form>
+
+        {% if result %}
+        <!-- RESULTS DISPLAY CARD -->
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-6">
+            <div class="flex items-center justify-between p-6 rounded-3xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200 dark:border-indigo-800">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Calculated ATS Score</span>
+                    <h2 class="text-4xl font-black text-slate-900 dark:text-white mt-1">{{ result.score }}% Fit Score</h2>
+                    <p class="text-xs text-slate-500 mt-1">Keyword Match: {{ result.keyword_match }}% ({{ result.matching_keywords|length }} matched out of {{ result.total_jd_keywords }} total keywords)</p>
+                </div>
+
+                <div class="w-20 h-20 rounded-full flex items-center justify-center font-black text-2xl shadow-lg text-white
+                    {% if result.score >= 80 %}bg-emerald-500{% elif result.score >= 50 %}bg-amber-500{% else %}bg-rose-500{% endif %}">
+                    {{ result.score }}%
+                </div>
+            </div>
+
+            <!-- KEYWORDS FOUND VS MISSING -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-900 space-y-3">
+                    <h4 class="font-bold text-sm text-emerald-800 dark:text-emerald-300 flex items-center">
+                        <i class="fa-solid fa-circle-check mr-2"></i>Matched Keywords ({{ result.matching_keywords|length }})
+                    </h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        {% for kw in result.matching_keywords %}
+                        <span class="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-xs font-bold">
+                            {{ kw }}
+                        </span>
+                        {% empty %}
+                        <span class="text-xs text-slate-400">No matching keywords detected.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900 space-y-3">
+                    <h4 class="font-bold text-sm text-rose-800 dark:text-rose-300 flex items-center">
+                        <i class="fa-solid fa-circle-xmark mr-2"></i>Missing Critical Keywords ({{ result.missing_keywords|length }})
+                    </h4>
+                    <div class="flex flex-wrap gap-1.5">
+                        {% for kw in result.missing_keywords %}
+                        <span class="px-2.5 py-1 rounded-lg bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 text-xs font-bold">
+                            + {{ kw }}
+                        </span>
+                        {% empty %}
+                        <span class="text-xs text-emerald-600 font-bold">Perfect match! No missing keywords.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- STRENGTHS, WEAKNESSES & SUGGESTIONS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Strengths -->
+                <div class="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 space-y-2">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center">
+                        <i class="fa-solid fa-thumbs-up mr-2"></i>Strengths
+                    </h4>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                        {% for s in result.strengths %}
+                        <li>{{ s }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Weaknesses -->
+                <div class="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 space-y-2">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center">
+                        <i class="fa-solid fa-triangle-exclamation mr-2"></i>Weaknesses
+                    </h4>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                        {% for w in result.weaknesses %}
+                        <li>{{ w }}</li>
+                        {% empty %}
+                        <li class="italic text-slate-400">None detected.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="p-5 rounded-2xl bg-slate-100 dark:bg-slate-800/80 space-y-2">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center">
+                        <i class="fa-solid fa-lightbulb mr-2"></i>Improvement Tips
+                    </h4>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-1 list-disc list-inside">
+                        {% for sug in result.suggestions %}
+                        <li>{{ sug }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- PREVIOUS ATS REPORTS HISTORY -->
+    <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+        <div class="flex justify-between items-center">
+            <div>
+                <h3 class="font-extrabold text-slate-900 dark:text-white text-base">Your Previous ATS Reports History</h3>
+                <p class="text-xs text-slate-400">Past ATS score analyses saved in your account database</p>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100/80 dark:bg-slate-800/80 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                        <th class="p-3.5 min-w-[180px]">Target Job</th>
+                        <th class="p-3.5 min-w-[140px]">Company</th>
+                        <th class="p-3.5 min-w-[100px]">ATS Score</th>
+                        <th class="p-3.5 min-w-[180px]">Matched Skills</th>
+                        <th class="p-3.5 min-w-[140px]">Analyzed Date</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                    {% for report in previous_reports %}
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-3.5 font-bold text-slate-900 dark:text-white">
+                            {% if report.job %}{{ report.job.title }}{% else %}Custom JD Analysis{% endif %}
+                        </td>
+                        <td class="p-3.5 text-slate-600 dark:text-slate-300">
+                            {% if report.job %}{{ report.job.company.name }}{% else %}N/A{% endif %}
+                        </td>
+                        <td class="p-3.5 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide
+                                {% if report.score >= 80 %}bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300
+                                {% elif report.score >= 50 %}bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300
+                                {% else %}bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300{% endif %}">
+                                {{ report.score }}% Fit
+                            </span>
+                        </td>
+                        <td class="p-3.5 text-slate-500 font-mono text-[11px] truncate max-w-xs">
+                            {{ report.matched_skills|default:"General keywords matched" }}
+                        </td>
+                        <td class="p-3.5 text-slate-500 font-mono text-[11px]">{{ report.created_at|date:"M d, Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="p-8 text-center text-slate-400 italic">No previous ATS reports saved yet. Run a calculation above to record your first report.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- JAVASCRIPT FOR DYNAMIC JOB SELECTION AUTO-FILL -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobSelect = document.getElementById('jobSelect');
+        const jdTextarea = document.getElementById('jdTextarea');
+        const autoFillBadge = document.getElementById('autoFillBadge');
+
+        jobSelect.addEventListener('change', function() {
+            const selectedOpt = jobSelect.options[jobSelect.selectedIndex];
+            const title = selectedOpt.getAttribute('data-title');
+            const company = selectedOpt.getAttribute('data-company');
+            const skills = selectedOpt.getAttribute('data-skills');
+            const exp = selectedOpt.getAttribute('data-experience');
+            const desc = selectedOpt.getAttribute('data-description');
+
+            if (title && desc) {
+                jdTextarea.value = `Job Title: ${title}\nCompany: ${company}\nRequired Skills: ${skills}\nRequired Experience: ${exp}\n\nJob Description:\n${desc}`;
+                autoFillBadge.textContent = "Auto-filled from selected job!";
+                autoFillBadge.classList.add("text-emerald-500");
+            }
+        });
+    });
+</script>
+{% endblock %}

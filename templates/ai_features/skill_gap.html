@@ -1,0 +1,91 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}AI Skill Gap & Roadmap | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-sky-600 dark:text-sky-400">Competency Mapping</span>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">Skill Gap Analysis & Roadmap</h1>
+            <p class="text-xs text-slate-500">Pick a target position to analyze what skills you have vs what you need to master.</p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Target Job Opening (Loaded from Database)</label>
+                <select name="job_id" required class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white font-semibold">
+                    {% if active_jobs %}
+                    <option value="">-- Choose Job Opening --</option>
+                    {% for j in active_jobs %}
+                    <option value="{{ j.id }}" {% if target_job.id == j.id or selected_job_id == j.id|stringformat:"s" %}selected{% endif %}>
+                        {{ j.title }} — {{ j.company.name }} ({{ j.location }} &bull; {{ j.get_job_type_display }})
+                    </option>
+                    {% endfor %}
+                    {% else %}
+                    <option value="" disabled selected>No Active Job Openings Available</option>
+                    {% endif %}
+                </select>
+            </div>
+            <button type="submit" class="w-full py-4 rounded-2xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-xl transition">
+                Run Skill Gap Audit & Generate Learning Steps
+            </button>
+        </form>
+
+        {% if gap_data %}
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-6">
+            <div class="p-6 rounded-3xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200 dark:border-sky-900 flex justify-between items-center">
+                <div>
+                    <span class="text-xs font-bold text-sky-700 dark:text-sky-300 uppercase">Target Role: {{ target_job.title }}</span>
+                    <h2 class="text-3xl font-black text-slate-900 dark:text-white mt-1">{{ gap_data.coverage_pct }}% Skill Coverage</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-5 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/30 space-y-2 border border-emerald-200 dark:border-emerald-900">
+                    <h4 class="font-bold text-sm text-emerald-800 dark:text-emerald-300">Matching Skills Acquired ({{ gap_data.matching_skills|length }})</h4>
+                    <div class="flex flex-wrap gap-1">
+                        {% for sk in gap_data.matching_skills %}
+                        <span class="px-2.5 py-1 rounded-lg bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200 text-xs font-bold">{{ sk }}</span>
+                        {% empty %}
+                        <span class="text-xs text-slate-400">None detected yet.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="p-5 rounded-2xl bg-rose-50/60 dark:bg-rose-950/30 space-y-2 border border-rose-200 dark:border-rose-900">
+                    <h4 class="font-bold text-sm text-rose-800 dark:text-rose-300">Missing Required Competencies ({{ gap_data.missing_skills|length }})</h4>
+                    <div class="flex flex-wrap gap-1">
+                        {% for sk in gap_data.missing_skills %}
+                        <span class="px-2.5 py-1 rounded-lg bg-rose-100 dark:bg-rose-900 text-rose-800 dark:text-rose-200 text-xs font-bold">+ {{ sk }}</span>
+                        {% empty %}
+                        <span class="text-xs text-emerald-600 font-bold">You meet all target skill criteria!</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3-Week Personalized Action Roadmap -->
+            <div class="glass-card p-6 rounded-3xl space-y-4">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Suggested 3-Week Skill Upskilling Plan</h3>
+                <div class="space-y-4">
+                    {% for step in gap_data.roadmap %}
+                    <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 flex items-start space-x-3 text-xs">
+                        <div class="w-7 h-7 rounded-full bg-sky-600 text-white font-bold flex items-center justify-center flex-shrink-0">
+                            {{ step.week }}
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="font-bold text-slate-900 dark:text-white">Week {{ step.week }}: Focus on {{ step.skill }}</h4>
+                            <p class="text-slate-600 dark:text-slate-300">{{ step.action }}</p>
+                            <span class="inline-block text-[10px] font-bold text-sky-600 dark:text-sky-400 uppercase">Recommended Resource: {{ step.resource }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

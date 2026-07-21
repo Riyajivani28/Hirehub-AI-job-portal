@@ -1,0 +1,74 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Contact Support & Sales | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-12 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Left Info -->
+            <div class="glass-card p-8 rounded-3xl space-y-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Get In Touch</span>
+                    <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">We Are Here To Assist You</h1>
+                    <p class="text-xs text-slate-500 leading-relaxed mt-2">Have a question about employer enterprise plans, recruiter integration, or candidate support? Our team responds within 24 hours.</p>
+                </div>
+
+                <div class="space-y-4 text-xs font-semibold">
+                    <div class="flex items-center space-x-3.5 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <i class="fa-solid fa-location-dot text-rose-500 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">Headquarters</span>
+                            <span class="text-slate-800 dark:text-white">Tech Innovation Park, Bangalore, KA, India</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3.5 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <i class="fa-solid fa-envelope text-indigo-500 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">Email Enquiries</span>
+                            <span class="text-slate-800 dark:text-white">support@hirehub.ai &bull; sales@hirehub.ai</span>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center space-x-3.5 p-3 rounded-2xl bg-slate-100 dark:bg-slate-800">
+                        <i class="fa-solid fa-phone text-emerald-500 text-lg"></i>
+                        <div>
+                            <span class="text-slate-400 block text-[10px]">Phone Support</span>
+                            <span class="text-slate-800 dark:text-white">+91 (800) 447-3482</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Form -->
+            <div class="glass-card p-8 rounded-3xl space-y-6">
+                <h3 class="font-bold text-lg text-slate-900 dark:text-white">Send Us a Direct Message</h3>
+                <form method="POST" class="space-y-4">
+                    {% csrf_token %}
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Your Full Name *</label>
+                        {{ form.name }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address *</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Subject *</label>
+                        {{ form.subject }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Message Content *</label>
+                        {{ form.message }}
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-xl transition">
+                        Dispatch Inquiry
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

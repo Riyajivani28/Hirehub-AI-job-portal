@@ -1,0 +1,86 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Site Analytics & Visitor Logs | HireHub Admin{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-6 rounded-3xl shadow-xl flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white">Site Analytics & Traffic Intelligence</h1>
+            <p class="text-xs text-slate-500">Track pageview logs, unique visitor IPs, and system metrics.</p>
+        </div>
+    </div>
+
+    <!-- System Visitor Logs Table -->
+    <div class="glass-card rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 dark:border-slate-800">
+        <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+            <h3 class="font-bold text-slate-900 dark:text-white text-base">Recent Site Traffic Audit Logs</h3>
+            <span class="px-3 py-1 rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300 text-xs font-bold">
+                Total Logs: {{ analytics.total_logs|default:visitor_logs|length }}
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100/80 dark:bg-slate-800/80 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                        <th class="p-4 min-w-[160px]">Timestamp</th>
+                        <th class="p-4 min-w-[140px]">Action Event</th>
+                        <th class="p-4 min-w-[130px]">Visitor IP</th>
+                        <th class="p-4 min-w-[180px]">Page Path</th>
+                        <th class="p-4 min-w-[160px]">Authenticated User</th>
+                        <th class="p-4 min-w-[200px]">Session & Browser Specs</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                    {% for log in visitor_logs %}
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-4 font-bold text-slate-900 dark:text-white whitespace-nowrap">
+                            {{ log.timestamp|date:"M d, Y H:i:s" }}
+                        </td>
+                        <td class="p-4 whitespace-nowrap">
+                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wide
+                                {% if log.action_type == 'Login' %}bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300
+                                {% elif log.action_type == 'Registration' %}bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300
+                                {% elif log.action_type == 'Dashboard Access' %}bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300
+                                {% elif log.action_type == 'Job Application' %}bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300
+                                {% elif log.action_type == 'AI Suite Module' %}bg-pink-100 text-pink-700 dark:bg-pink-950 dark:text-pink-300
+                                {% else %}bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300{% endif %}">
+                                {{ log.action_type }}
+                            </span>
+                        </td>
+                        <td class="p-4 font-mono text-indigo-600 dark:text-indigo-400 font-bold whitespace-nowrap">
+                            {{ log.ip_address|default:"127.0.0.1" }}
+                        </td>
+                        <td class="p-4 font-semibold text-slate-800 dark:text-slate-200">
+                            <code class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[11px] font-mono">{{ log.page_visited }}</code>
+                        </td>
+                        <td class="p-4 text-slate-600 dark:text-slate-300 whitespace-nowrap">
+                            {% if log.user %}
+                            <div class="flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-indigo-500 text-white font-bold flex items-center justify-center text-[10px]">
+                                    {{ log.user.username|slice:":1"|upper }}
+                                </span>
+                                <span class="font-bold text-slate-900 dark:text-white">{{ log.user.username }}</span>
+                            </div>
+                            {% else %}
+                            <span class="text-slate-400 italic">Guest Visitor</span>
+                            {% endif %}
+                        </td>
+                        <td class="p-4 text-slate-400 max-w-xs truncate">
+                            <span class="block font-mono text-[10px] text-slate-500" title="Session: {{ log.session_key }}">
+                                Session: {{ log.session_key|default:"Anonymous"|slice:":12" }}...
+                            </span>
+                            <span class="text-[10px] truncate block" title="{{ log.user_agent }}">{{ log.user_agent }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-slate-400 italic">No traffic logs recorded yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

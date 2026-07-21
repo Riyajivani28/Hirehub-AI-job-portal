@@ -1,0 +1,64 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}AI Resume Builder | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Document Generation</span>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">Instant AI Resume Builder</h1>
+            <p class="text-xs text-slate-500">Auto-generate quantified achievements and structural templates based on your target role.</p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Target Role Title *</label>
+                    <input type="text" name="role" value="{{ target_role }}" required placeholder="e.g. Django Full Stack Architect" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Experience Summary</label>
+                    <input type="text" name="exp" value="{{ exp_level }}" placeholder="e.g. 3 years in Python & React" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-xl transition">
+                Generate Structured Bullet Points & Professional Document
+            </button>
+        </form>
+
+        {% if resume_doc %}
+        <div id="builtResumeDoc" class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-6">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Generated Resume Template for {{ target_role }}</h3>
+                <button onclick="window.print()" class="px-6 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs">Print / Export PDF</button>
+            </div>
+
+            <div class="bg-white text-slate-900 p-8 rounded-3xl border border-slate-200 space-y-6 shadow-xl">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black">{{ user.get_full_name|default:user.username }}</h2>
+                    <p class="text-xs text-indigo-600 font-bold uppercase">{{ target_role }}</p>
+                    <p class="text-xs text-slate-500">{{ user.email }} &bull; {{ user.phone|default:"+91 9876543210" }}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-xs uppercase text-indigo-600 border-b border-indigo-100 pb-1">Professional Summary</h4>
+                    <p class="text-xs text-slate-700 leading-relaxed">{{ resume_doc.summary }}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="font-bold text-xs uppercase text-indigo-600 border-b border-indigo-100 pb-1">Quantified Experience Highlights</h4>
+                    <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                        {% for b in resume_doc.bullets %}
+                        <li>{{ b }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Schedule Interview | HireHub Recruiter{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+        <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Interview Logistics</span>
+                <h1 class="text-2xl font-black text-slate-900 dark:text-white mt-1">Schedule Interview Call</h1>
+                <p class="text-xs text-slate-500">Candidate: {{ app.applicant.get_full_name|default:app.applicant.username }} for position {{ app.job.title }}.</p>
+            </div>
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Scheduled Date & Time *</label>
+                    {{ form.scheduled_date }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Google Meet / Video Call URL</label>
+                    {{ form.meet_link }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Physical Office Address (If In-Person)</label>
+                    {{ form.office_address }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Preparation Guidelines & Interview Scope</label>
+                    {{ form.notes }}
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3">
+                    <a href="{% url 'employer_applications' %}" class="px-6 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-xs font-bold">Cancel</a>
+                    <button type="submit" class="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg">
+                        Confirm Schedule & Notify Candidate
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

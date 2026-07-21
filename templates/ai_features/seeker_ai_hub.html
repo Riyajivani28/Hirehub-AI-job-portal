@@ -1,0 +1,270 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Job Seeker AI Suite Hub | HireHub Career Intelligence{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-8">
+    <!-- HERO HEADER -->
+    <div class="rounded-3xl bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-950 p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-indigo-400/20">
+        <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-black uppercase tracking-widest text-indigo-200">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                <span>Candidate AI Career Acceleration Center</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
+                Job Seeker AI Suite Hub
+            </h1>
+            <p class="text-sm text-indigo-100 leading-relaxed">
+                Supercharge your job search with AI resume builder, ATS match score, interview kits, skill gap analysis, custom cover letter drafting, salary benchmarks, and 24/7 AI career mentoring.
+            </p>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- METRICS GRID (4 HIGHLIGHT CARDS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-indigo-600 dark:text-indigo-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Profile Strength</span>
+                <i class="fa-solid fa-gauge-high text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ completion_score }}%</h3>
+            <p class="text-[11px] text-slate-500">Resume & Profile completeness score</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">ATS Match Ready</span>
+                <i class="fa-solid fa-file-check text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ profile.resume_ats_score|default:85 }}%</h3>
+            <p class="text-[11px] text-slate-500">Average ATS scanner rating</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-purple-600 dark:text-purple-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Applications</span>
+                <i class="fa-solid fa-paper-plane text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ applied_count }}</h3>
+            <p class="text-[11px] text-slate-500">Submitted job applications</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-amber-600 dark:text-amber-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Skills Tracked</span>
+                <i class="fa-solid fa-layer-group text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ seeker_skills|length }}</h3>
+            <p class="text-[11px] text-slate-500">Configured candidate skills</p>
+        </div>
+    </div>
+
+    <!-- AI OUTPUT MODAL / DISPLAY RESULT IF POSTED -->
+    {% if ai_result %}
+    <div class="glass-card p-6 rounded-3xl border border-indigo-500/40 bg-gradient-to-br from-indigo-900/10 to-purple-900/10 shadow-2xl space-y-3">
+        <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-slate-900 dark:text-white text-base flex items-center space-x-2">
+                <i class="fa-solid fa-sparkles text-amber-400"></i>
+                <span>Generated AI Result Output</span>
+            </h3>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold">Processed</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900 text-slate-200 font-mono text-xs whitespace-pre-wrap leading-relaxed">
+            {{ ai_result }}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 10 CORE CANDIDATE AI MODULES -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- 1. 📄 AI RESUME BUILDER -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    📄
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">1. AI Resume Builder</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Build and format modern, ATS-optimized resumes with automated section suggestions and professional layout templates.
+                </p>
+            </div>
+            <a href="{% url 'ai_resume_builder' %}" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 shadow-md transition text-center block">
+                Launch Resume Builder &rarr;
+            </a>
+        </div>
+
+        <!-- 2. 📊 ATS RESUME MATCH SCORE -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                    📊
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">2. ATS Resume Match Score</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Scan your resume against target job postings to reveal exact keyword alignment and ATS compatibility scores.
+                </p>
+            </div>
+            <a href="{% url 'ai_ats_score' %}" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 shadow-md transition text-center block">
+                Calculate ATS Match Score &rarr;
+            </a>
+        </div>
+
+        <!-- 3. 💪 RESUME STRENGTH AUDIT -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300 flex items-center justify-center font-bold text-lg">
+                    💪
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">3. Resume Strength Audit</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Perform a deep structural audit on your profile, experience descriptions, and achievement metrics.
+                </p>
+            </div>
+            <a href="{% url 'ai_resume_analyzer' %}" class="w-full py-2.5 rounded-xl bg-amber-600 text-white font-bold text-xs hover:bg-amber-700 shadow-md transition text-center block">
+                Audit Resume Strength &rarr;
+            </a>
+        </div>
+
+        <!-- 4. 📈 SKILL GAP ANALYSIS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-300 flex items-center justify-center font-bold text-lg">
+                    📈
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">4. Skill Gap Analysis</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Identify missing high-demand technical skills required for your target role and get targeted course recommendations.
+                </p>
+            </div>
+            <a href="{% url 'ai_skill_gap' %}" class="w-full py-2.5 rounded-xl bg-purple-600 text-white font-bold text-xs hover:bg-purple-700 shadow-md transition text-center block">
+                Analyze Skill Gaps &rarr;
+            </a>
+        </div>
+
+        <!-- 5. 💼 AI JOB RECOMMENDATION -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-300 flex items-center justify-center font-bold text-lg">
+                    💼
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">5. AI Job Recommendation</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Discover high-affinity vacancies customized to your unique skill stack and career experience.
+                </p>
+            </div>
+            <a href="{% url 'ai_job_recommendation' %}" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs hover:bg-sky-700 shadow-md transition text-center block">
+                View Job Recommendations &rarr;
+            </a>
+        </div>
+
+        <!-- 6. 🎤 AI INTERVIEW PREPARATION -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 dark:bg-pink-950 dark:text-pink-300 flex items-center justify-center font-bold text-lg">
+                    🎤
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">6. AI Interview Preparation</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Practice role-tailored technical & STAR behavioral questions with AI model answer breakdowns.
+                </p>
+            </div>
+            <a href="{% url 'ai_interview_generator' %}" class="w-full py-2.5 rounded-xl bg-pink-600 text-white font-bold text-xs hover:bg-pink-700 shadow-md transition text-center block">
+                Generate Interview Kit &rarr;
+            </a>
+        </div>
+
+        <!-- 7. 🤖 CAREER MENTOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 flex flex-col justify-between">
+            <div class="space-y-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    🤖
+                </div>
+                <h3 class="font-bold text-slate-900 dark:text-white text-base">7. AI Career Mentor Chatbot</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">
+                    Chat 24/7 with your personal executive career mentor for real-time advice on salary negotiation, STAR responses, and career growth.
+                </p>
+            </div>
+            <a href="{% url 'ai_career_chatbot' %}" class="w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 shadow-md transition text-center block">
+                Chat With AI Mentor &rarr;
+            </a>
+        </div>
+
+        <!-- 8. ✍️ COVER LETTER GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-teal-100 text-teal-600 dark:bg-teal-950 dark:text-teal-300 flex items-center justify-center font-bold text-lg">
+                    ✍️
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">8. Cover Letter Generator</h3>
+                    <p class="text-xs text-slate-500">Custom tailored cover letters</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_cover_letter">
+                <input type="text" name="target_role" placeholder="Target Job Title (e.g. Frontend Dev)" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <input type="text" name="company_name" placeholder="Target Company Name" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <input type="text" name="key_highlights" placeholder="Key Highlights (e.g. React, Node.js)" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-teal-600 text-white font-bold text-xs hover:bg-teal-700 shadow-md transition">
+                    Generate Cover Letter
+                </button>
+            </form>
+        </div>
+
+        <!-- 9. 💰 SALARY ESTIMATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                    💰
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">9. Salary Estimator</h3>
+                    <p class="text-xs text-slate-500">Market benchmark predictions</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="estimate_salary">
+                <input type="text" name="target_role" placeholder="Role (e.g. Python Backend Engineer)" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" name="experience_years" placeholder="Exp Yrs (e.g. 3)" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <input type="text" name="location" placeholder="Location (e.g. Remote)" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 shadow-md transition">
+                    Estimate Salary Range
+                </button>
+            </form>
+        </div>
+
+        <!-- 10. 🛣️ LEARNING ROADMAP -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 md:col-span-2 lg:col-span-3">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    🛣️
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">10. AI Skill Learning Roadmap Generator</h3>
+                    <p class="text-xs text-slate-500">Step-by-step 4-phase technical roadmap tailored to your target engineering career</p>
+                </div>
+            </div>
+            <form method="POST" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_roadmap">
+                <input type="text" name="target_role" placeholder="Target Role (e.g. Fullstack Engineer)" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <select name="current_level" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <option value="Beginner">Beginner Level</option>
+                    <option value="Intermediate">Intermediate Level</option>
+                    <option value="Advanced">Advanced Level</option>
+                </select>
+                <button type="submit" class="py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 shadow-md transition">
+                    Generate Career Roadmap &rarr;
+                </button>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

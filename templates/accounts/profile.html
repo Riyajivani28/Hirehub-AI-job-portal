@@ -1,0 +1,181 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}{{ target_user.get_full_name|default:target_user.username }}'s Profile | HireHub{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+        
+        <!-- Profile Banner Header -->
+        <div class="glass-card p-8 rounded-3xl shadow-xl flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+            <div class="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
+                <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 text-white font-black text-3xl flex items-center justify-center shadow-xl">
+                    {% if target_user.avatar %}
+                        <img src="{{ target_user.avatar.url }}" class="w-24 h-24 rounded-3xl object-cover" alt="Avatar">
+                    {% else %}
+                        {{ target_user.username|slice:":2"|upper }}
+                    {% endif %}
+                </div>
+                <div class="space-y-1">
+                    <div class="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                        <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{{ target_user.get_full_name|default:target_user.username }}</h1>
+                        {% if target_user.is_verified %}
+                        <i class="fa-solid fa-circle-check text-indigo-500 text-lg" title="Verified Seeker"></i>
+                        {% endif %}
+                    </div>
+                    <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">{{ profile.headline|default:"Professional Software Engineer" }}</p>
+                    <p class="text-xs text-slate-500 flex items-center justify-center md:justify-start space-x-3 pt-1">
+                        <span><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>{{ profile.city|default:"Bangalore" }}, {{ profile.country|default:"India" }}</span>
+                        <span>&bull;</span>
+                        <span><i class="fa-regular fa-envelope mr-1"></i>{{ target_user.email }}</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Completion & Action -->
+            <div class="flex flex-col items-center md:items-end space-y-3 w-full md:w-auto">
+                {% if is_own %}
+                <a href="{% url 'profile_edit' %}" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span>Edit Profile</span>
+                </a>
+                
+                <div class="w-full md:w-48 bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                    <div class="bg-gradient-to-r from-indigo-500 to-emerald-500 h-full rounded-full" style="--completion: {{ completion_pct|default:0 }}%; width: var(--completion);"></div>
+                </div>
+                <span class="text-xs font-semibold text-slate-500">Profile Completion: {{ completion_pct }}%</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Sidebar Details -->
+            <div class="space-y-6">
+                <!-- Personal Info Card -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base border-b border-slate-100 dark:border-slate-800 pb-3">Personal Specs</h4>
+                    <div class="space-y-3 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">Gender</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-200 capitalize">{{ profile.gender|default:"Not specified" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">Date of Birth</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-200">{{ profile.dob|date:"M d, Y"|default:"Not specified" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">Phone</span>
+                            <span class="font-bold text-slate-800 dark:text-slate-200">{{ target_user.phone|default:"Not provided" }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-slate-400 font-medium">Expected Salary</span>
+                            <span class="font-bold text-indigo-600 dark:text-indigo-400">{{ profile.expected_salary|default:"Open to discuss" }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Online Links & Resume Card -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base border-b border-slate-100 dark:border-slate-800 pb-3">Links & Credentials</h4>
+                    <div class="space-y-2.5 text-xs font-semibold">
+                        {% if profile.linkedin_url %}
+                        <a href="{{ profile.linkedin_url }}" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:text-indigo-600 transition">
+                            <i class="fa-brands fa-linkedin text-blue-600 text-lg"></i>
+                            <span class="truncate">LinkedIn Profile</span>
+                        </a>
+                        {% endif %}
+                        {% if profile.github_url %}
+                        <a href="{{ profile.github_url }}" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:text-indigo-600 transition">
+                            <i class="fa-brands fa-github text-slate-800 dark:text-white text-lg"></i>
+                            <span class="truncate">GitHub Workspace</span>
+                        </a>
+                        {% endif %}
+                        {% if profile.portfolio_url %}
+                        <a href="{{ profile.portfolio_url }}" target="_blank" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:text-indigo-600 transition">
+                            <i class="fa-solid fa-globe text-emerald-500 text-lg"></i>
+                            <span class="truncate">Personal Portfolio</span>
+                        </a>
+                        {% endif %}
+
+                        {% if profile.resume %}
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-800">
+                            <span class="text-[10px] text-slate-400 uppercase font-bold block mb-2">Resume File</span>
+                            <a href="{{ profile.resume.url }}" target="_blank" class="flex items-center justify-between p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 font-bold border border-indigo-200 dark:border-indigo-800">
+                                <span class="flex items-center"><i class="fa-solid fa-file-pdf mr-2 text-rose-500 text-base"></i>View Attached Resume</span>
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content: Education, Experience & Skills -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Biography / Executive Summary -->
+                {% if target_user.bio %}
+                <div class="glass-card p-6 rounded-3xl space-y-3">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Executive Summary</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{{ target_user.bio }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Work Experience Timeline -->
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                        <i class="fa-solid fa-briefcase text-indigo-500 mr-2"></i>Work Experience
+                    </h3>
+                    <div class="space-y-6">
+                        {% for exp in profile.experience_set.all %}
+                        <div class="relative pl-6 border-l-2 border-indigo-500 space-y-1">
+                            <div class="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-indigo-600 ring-4 ring-white dark:ring-slate-900"></div>
+                            <h4 class="font-bold text-base text-slate-900 dark:text-white">{{ exp.title }}</h4>
+                            <p class="text-xs font-semibold text-indigo-600 dark:text-indigo-400">{{ exp.company_name }} &bull; {{ exp.location }}</p>
+                            <p class="text-xs text-slate-400 font-medium">
+                                {{ exp.start_date|date:"M Y" }} - {% if exp.is_current %}Present{% else %}{{ exp.end_date|date:"M Y" }}{% endif %}
+                            </p>
+                            {% if exp.description %}
+                            <p class="text-xs text-slate-600 dark:text-slate-300 pt-2 leading-relaxed">{{ exp.description }}</p>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                        <p class="text-xs text-slate-400 italic">No experience records added yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Education Credentials -->
+                <div class="glass-card p-8 rounded-3xl space-y-6">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                        <i class="fa-solid fa-graduation-cap text-purple-500 mr-2"></i>Education History
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {% for edu in profile.education_set.all %}
+                        <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 space-y-1 border border-slate-200/60 dark:border-slate-700/60">
+                            <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ edu.degree }}</h4>
+                            <p class="text-xs font-semibold text-slate-600 dark:text-slate-300">{{ edu.institution }}</p>
+                            <p class="text-xs text-slate-400">{{ edu.start_year }} - {{ edu.end_year }} | Grade: {{ edu.grade }}</p>
+                        </div>
+                        {% empty %}
+                        <p class="text-xs text-slate-400 italic">No education records added yet.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Skills Matrix -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white flex items-center">
+                        <i class="fa-solid fa-code text-emerald-500 mr-2"></i>Competency Skills
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for sk in profile.skills.all %}
+                        <span class="px-4 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs font-bold border border-slate-200 dark:border-slate-700 flex items-center space-x-2">
+                            <span>{{ sk.skill.name }}</span>
+                            <span class="text-[10px] uppercase px-2 py-0.5 rounded bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-extrabold">{{ sk.level }}</span>
+                        </span>
+                        {% empty %}
+                        <p class="text-xs text-slate-400 italic">No skill tags registered.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Platform Feedback | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-12 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6">
+        <div class="glass-card p-8 sm:p-10 rounded-3xl shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-xl mx-auto shadow-lg">
+                    <i class="fa-solid fa-comment-dots"></i>
+                </div>
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white">Share Your Feedback</h1>
+                <p class="text-xs text-slate-500">Your opinion helps us make HireHub better for everyone.</p>
+            </div>
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Feedback Topic Subject *</label>
+                    {{ form.subject }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Experience Rating *</label>
+                    {{ form.rating }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Your Feedback Details *</label>
+                    {{ form.message }}
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-bold text-sm shadow-xl transition">
+                    Submit Portal Feedback
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Create Account | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-2xl mx-auto glass-card p-8 sm:p-10 rounded-3xl shadow-2xl space-y-8">
+        <div class="text-center space-y-2">
+            <h2 class="text-3xl font-black text-slate-900 dark:text-white">Create Your HireHub Account</h2>
+            <p class="text-xs text-slate-500">Select your account role and get started in seconds.</p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            
+            <!-- ROLE SELECTION CARDS -->
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 text-center">Select Account Role</label>
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="cursor-pointer">
+                        <input type="radio" name="role" value="jobseeker" class="peer hidden" {% if selected_role == 'jobseeker' or not selected_role %}checked{% endif %}>
+                        <div class="p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-800 peer-checked:border-indigo-600 peer-checked:bg-indigo-50/60 dark:peer-checked:bg-indigo-950/40 transition text-center space-y-2">
+                            <i class="fa-solid fa-user-graduate text-2xl text-indigo-600 dark:text-indigo-400"></i>
+                            <h4 class="font-bold text-sm text-slate-900 dark:text-white">Job Seeker</h4>
+                            <p class="text-[11px] text-slate-500">Apply for positions & ATS checks</p>
+                        </div>
+                    </label>
+
+                    <label class="cursor-pointer">
+                        <input type="radio" name="role" value="employer" class="peer hidden" {% if selected_role == 'employer' %}checked{% endif %}>
+                        <div class="p-5 rounded-2xl border-2 border-slate-200 dark:border-slate-800 peer-checked:border-purple-600 peer-checked:bg-purple-50/60 dark:peer-checked:bg-purple-950/40 transition text-center space-y-2">
+                            <i class="fa-solid fa-building-user text-2xl text-purple-600 dark:text-purple-400"></i>
+                            <h4 class="font-bold text-sm text-slate-900 dark:text-white">Employer / HR</h4>
+                            <p class="text-[11px] text-slate-500">Post jobs & rank candidate AI fits</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- FORM INPUTS -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">First Name</label>
+                    {{ form.first_name }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Username *</label>
+                    {{ form.username }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Email Address *</label>
+                    {{ form.email }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Password *</label>
+                    {{ form.password }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Confirm Password *</label>
+                    {{ form.confirm_password }}
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-bold text-sm shadow-xl shadow-indigo-500/25 transition">
+                Create Account & Proceed
+            </button>
+        </form>
+
+        <div class="text-center text-xs text-slate-500 pt-2 border-t border-slate-100 dark:border-slate-800">
+            Already registered?
+            <a href="{% url 'login' %}" class="font-bold text-indigo-600 dark:text-indigo-400 hover:underline">Log in here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

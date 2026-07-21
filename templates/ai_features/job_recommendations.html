@@ -1,0 +1,63 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}AI Job Recommendations | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-6 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-purple-600 dark:text-purple-400">Match Engine</span>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white mt-1">Smart AI Job Match Recommendations</h1>
+            <p class="text-xs text-slate-500">Jobs calculated with highest probability of application success based on your profile skills.</p>
+        </div>
+
+        <form method="GET" class="w-full md:w-auto">
+            <select name="job_id" onchange="this.form.submit()" class="w-full md:w-80 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-xs dark:text-white font-semibold shadow-sm">
+                {% if active_jobs %}
+                <option value="">-- Filter by Active Job Opening --</option>
+                {% for j in active_jobs %}
+                <option value="{{ j.id }}" {% if selected_job_id == j.id|stringformat:"s" %}selected{% endif %}>
+                    {{ j.title }} — {{ j.company.name }} ({{ j.location }} &bull; {{ j.get_job_type_display }})
+                </option>
+                {% endfor %}
+                {% else %}
+                <option value="" disabled selected>No Active Job Openings Available</option>
+                {% endif %}
+            </select>
+        </form>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for item in recommendations %}
+        <div class="glass-card p-6 rounded-3xl space-y-4 flex flex-col justify-between hover:shadow-2xl transition duration-300">
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <span class="px-3 py-1 rounded-full text-xs font-black bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">
+                        {{ item.match_pct }}% Match Fit
+                    </span>
+                    <span class="text-xs text-slate-400 font-bold uppercase">{{ item.job.get_job_type_display }}</span>
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ item.job.title }}</h3>
+                <p class="text-xs text-slate-500 font-medium">{{ item.job.company.name }} &bull; {{ item.job.location }}</p>
+                <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-2 leading-relaxed">{{ item.job.description }}</p>
+
+                <div class="pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold block mb-1">Key Match Drivers:</span>
+                    <div class="flex flex-wrap gap-1">
+                        {% for driver in item.drivers %}
+                        <span class="px-2 py-0.5 rounded bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-[10px] font-bold">+ {{ driver }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                <span class="font-extrabold text-slate-900 dark:text-white text-xs">₹{{ item.job.salary_min|floatformat:0 }}</span>
+                <a href="{% url 'job_detail' item.job.id %}" class="px-4 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs">View Position</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

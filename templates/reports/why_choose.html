@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Why Choose HireHub | AI Powered Enterprise Recruitment Platform{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+            <span class="text-xs font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Why HireHub</span>
+            <h1 class="text-4xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">Built For High Performance Hiring</h1>
+            <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
+                HireHub combines cutting-edge Django backend reliability with AI-driven applicant scoring to bridge candidate skills and employer requirements seamlessly.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass-card p-8 rounded-3xl space-y-4 shadow-xl">
+                <div class="w-14 h-14 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-bold">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">99% ATS Accuracy</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Real-time keyword matching algorithms ensure candidate resumes format cleanly for automated parsers.</p>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl space-y-4 shadow-xl">
+                <div class="w-14 h-14 rounded-2xl bg-purple-600 text-white flex items-center justify-center text-2xl font-bold">
+                    <i class="fa-solid fa-bolt"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">3x Faster Placement</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Smart interview scheduling and Google Meet integration remove email back-and-forth delays.</p>
+            </div>
+
+            <div class="glass-card p-8 rounded-3xl space-y-4 shadow-xl">
+                <div class="w-14 h-14 rounded-2xl bg-pink-600 text-white flex items-center justify-center text-2xl font-bold">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Verified Employers Only</h3>
+                <p class="text-xs text-slate-500 leading-relaxed">Every company profile undergoes verification moderation by site administrators prior to job publishing.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

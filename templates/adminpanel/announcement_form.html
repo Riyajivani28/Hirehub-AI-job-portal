@@ -1,0 +1,41 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Publish Announcement | HireHub Admin{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Broadcaster</span>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white mt-1">Broadcast System Announcement</h1>
+            <p class="text-xs text-slate-500">Post system announcements to candidate or employer dashboards.</p>
+        </div>
+
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Headline Title *</label>
+                <input type="text" name="title" required placeholder="e.g. Platform Maintenance Scheduled" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Announcement Content *</label>
+                <textarea name="message" rows="4" required placeholder="Details..." class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white"></textarea>
+            </div>
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Target Audience Role</label>
+                <select name="target_role" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+                    <option value="all">All Registered Users</option>
+                    <option value="jobseeker">Job Seekers Only</option>
+                    <option value="employer">Employers Only</option>
+                </select>
+            </div>
+
+            <div class="pt-4 flex justify-end space-x-3">
+                <button type="submit" class="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-lg">
+                    Publish Broadcast
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

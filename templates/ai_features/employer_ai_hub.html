@@ -1,0 +1,302 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Employer & HR AI Suite Hub | HireHub Recruitment Intelligence{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-8">
+    <!-- HERO HEADER -->
+    <div class="rounded-3xl bg-gradient-to-r from-indigo-900 via-purple-900 to-indigo-950 p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-indigo-400/20">
+        <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-black uppercase tracking-widest text-indigo-200">
+                <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                <span>HR & Recruitment AI Control Center</span>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black tracking-tight text-white">
+                Employer AI Suite Hub
+            </h1>
+            <p class="text-sm text-indigo-100 leading-relaxed">
+                Supercharge your recruitment pipeline with AI candidate ranking, automated ATS resume screening, interview kit generation, email drafting, and hiring telemetry.
+            </p>
+        </div>
+        <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    </div>
+
+    <!-- METRICS GRID (4 HIGHLIGHT CARDS) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-indigo-600 dark:text-indigo-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Active Openings</span>
+                <i class="fa-solid fa-briefcase text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ hiring_analytics.total_vacancies }}</h3>
+            <p class="text-[11px] text-slate-500">Vacancies posted by your company</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-purple-600 dark:text-purple-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Applicant Pipeline</span>
+                <i class="fa-solid fa-users text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ hiring_analytics.total_applicants }}</h3>
+            <p class="text-[11px] text-slate-500">Total received applications</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-emerald-600 dark:text-emerald-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Interviewing Stage</span>
+                <i class="fa-solid fa-user-tie text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ hiring_analytics.interviewing_count }}</h3>
+            <p class="text-[11px] text-slate-500">Scheduled interviews</p>
+        </div>
+
+        <div class="glass-card p-5 rounded-3xl space-y-2 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center justify-between text-amber-600 dark:text-amber-400">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Avg Candidate Score</span>
+                <i class="fa-solid fa-star text-lg"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-900 dark:text-white">{{ hiring_analytics.avg_candidate_score }}%</h3>
+            <p class="text-[11px] text-slate-500">Mean ATS & Skill match score</p>
+        </div>
+    </div>
+
+    <!-- AI OUTPUT MODAL / DISPLAY RESULT IF POSTED -->
+    {% if ai_output %}
+    <div class="glass-card p-6 rounded-3xl border border-indigo-500/40 bg-gradient-to-br from-indigo-900/10 to-purple-900/10 shadow-2xl space-y-3">
+        <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-slate-900 dark:text-white text-base flex items-center space-x-2">
+                <i class="fa-solid fa-sparkles text-amber-400"></i>
+                <span>Generated AI Result Output</span>
+            </h3>
+            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 text-xs font-bold">Processed</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-900 text-slate-200 font-mono text-xs whitespace-pre-wrap leading-relaxed">
+            {{ ai_output }}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 10 CORE HR AI MODULES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- 1. 🤖 SMART CANDIDATE MATCHING & 3. 🏆 CANDIDATE RANKING -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 lg:col-span-2">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                        🤖
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">1. Smart Candidate Matching & 3. Candidate Ranking</h3>
+                        <p class="text-xs text-slate-500">Ranked candidate pipeline scored by ATS & skill compatibility</p>
+                    </div>
+                </div>
+                <a href="{% url 'ai_smart_matching' %}" class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 transition">
+                    View Full Matrix &rarr;
+                </a>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100/80 dark:bg-slate-800/80 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                            <th class="p-4 min-w-[50px]">Rank</th>
+                            <th class="p-4 min-w-[180px]">Candidate</th>
+                            <th class="p-4 min-w-[180px]">Target Vacancy</th>
+                            <th class="p-4 min-w-[120px]">Overall Match</th>
+                            <th class="p-4 min-w-[200px]">Skill Breakdown</th>
+                            <th class="p-4 text-right min-w-[140px]">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                        {% for item in ranked_pipeline %}
+                        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                            <td class="p-4 font-black text-indigo-600 dark:text-indigo-400 text-sm">#{{ forloop.counter }}</td>
+                            <td class="p-4">
+                                <span class="font-bold text-slate-900 dark:text-white block">{{ item.application.applicant.get_full_name|default:item.application.applicant.username }}</span>
+                                <span class="text-[10px] text-slate-400">{{ item.application.applicant.email }}</span>
+                            </td>
+                            <td class="p-4 text-slate-600 dark:text-slate-300 font-semibold">{{ item.application.job.title }}</td>
+                            <td class="p-4 whitespace-nowrap">
+                                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wide
+                                    {% if item.match_score >= 80 %}bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300
+                                    {% elif item.match_score >= 60 %}bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300
+                                    {% else %}bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300{% endif %}">
+                                    {{ item.match_score }}% Match
+                                </span>
+                            </td>
+                            <td class="p-4 text-slate-500">
+                                <div class="flex flex-wrap gap-1">
+                                    {% for sk in item.applicant_skills|slice:":3" %}
+                                    <span class="px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-[10px] font-mono text-slate-700 dark:text-slate-300">{{ sk }}</span>
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td class="p-4 text-right whitespace-nowrap">
+                                <a href="{% url 'employer_applications' %}" class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white font-bold text-[11px] hover:bg-indigo-600 hover:text-white transition">
+                                    Review &rarr;
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="p-8 text-center text-slate-400 italic">No job applications received yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2. 📄 AI RESUME SCREENING & 4. 🎯 SKILL MATCH ANALYSIS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-600 dark:bg-purple-950 dark:text-purple-300 flex items-center justify-center font-bold text-lg">
+                    🎯
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">2. AI Resume Screening & 4. Skill Match Analysis</h3>
+                    <p class="text-xs text-slate-500">Automated candidate competence evaluation</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    AI automatically screens uploaded resumes against core requirements: technical stack, years of experience, education records, and formatting clarity.
+                </p>
+                <div class="p-3 rounded-2xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 text-xs font-semibold">
+                    <i class="fa-solid fa-circle-check mr-1"></i> Automated ATS Parsing active for all candidate PDF & DOCX resumes.
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. 📝 AI JOB DESCRIPTION GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                    📝
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">5. AI Job Description Generator</h3>
+                    <p class="text-xs text-slate-500">Draft high-converting job posts instantly</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_jd">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" name="job_title" placeholder="Job Title (e.g. Fullstack Dev)" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <input type="text" name="experience" placeholder="Exp Required (e.g. 2-4 Yrs)" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                </div>
+                <input type="text" name="skills_required" placeholder="Key Skills (e.g. Django, React, PostgreSQL)" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-xs hover:bg-emerald-700 shadow-md transition">
+                    Generate Job Description
+                </button>
+            </form>
+        </div>
+
+        <!-- 6. ❓ AI INTERVIEW QUESTION GENERATOR -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-pink-100 text-pink-600 dark:bg-pink-950 dark:text-pink-300 flex items-center justify-center font-bold text-lg">
+                    ❓
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">6. AI Interview Question Generator</h3>
+                    <p class="text-xs text-slate-500">Generate role-tailored technical & HR kits</p>
+                </div>
+            </div>
+            <a href="{% url 'ai_interview_generator' %}" class="w-full py-2.5 rounded-xl bg-pink-600 text-white font-bold text-xs hover:bg-pink-700 shadow-md transition flex items-center justify-center space-x-2 block text-center">
+                <i class="fa-solid fa-clipboard-question"></i>
+                <span>Launch Interview Question Kit Prep &rarr;</span>
+            </a>
+        </div>
+
+        <!-- 7. 📧 EMAIL GENERATOR (INTERVIEW / OFFER / REJECTION) -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-600 dark:bg-sky-950 dark:text-sky-300 flex items-center justify-center font-bold text-lg">
+                    📧
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">7. AI HR Email Generator</h3>
+                    <p class="text-xs text-slate-500">Draft Interview, Offer & Rejection Letters</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="generate_email">
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" name="candidate_name" placeholder="Candidate Name" required class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <select name="email_type" class="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                        <option value="interview">Interview Call Email</option>
+                        <option value="offer">Job Offer Letter</option>
+                        <option value="rejection">Rejection Notice</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-sky-600 text-white font-bold text-xs hover:bg-sky-700 shadow-md transition">
+                    Draft Custom Email
+                </button>
+            </form>
+        </div>
+
+        <!-- 8. 📅 INTERVIEW SCHEDULER & 9. ⭐ CANDIDATE EVALUATION -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-600 dark:bg-amber-950 dark:text-amber-300 flex items-center justify-center font-bold text-lg">
+                    📅
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">8. Interview Scheduler & 9. Candidate Evaluation</h3>
+                    <p class="text-xs text-slate-500">Schedule slots & log interview scores</p>
+                </div>
+            </div>
+            <form method="POST" class="space-y-3">
+                {% csrf_token %}
+                <input type="hidden" name="action_type" value="schedule_interview">
+                <select name="application_id" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                    <option value="">-- Select Candidate --</option>
+                    {% for item in ranked_pipeline %}
+                    <option value="{{ item.application.id }}">{{ item.application.applicant.get_full_name|default:item.application.applicant.username }} ({{ item.application.job.title }})</option>
+                    {% endfor %}
+                </select>
+                <input type="datetime-local" name="interview_date" required class="w-full px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs dark:text-white border-0">
+                <button type="submit" class="w-full py-2.5 rounded-xl bg-amber-600 text-white font-bold text-xs hover:bg-amber-700 shadow-md transition">
+                    Schedule Interview
+                </button>
+            </form>
+        </div>
+
+        <!-- 10. 📊 HIRING ANALYTICS -->
+        <div class="glass-card p-6 rounded-3xl space-y-4 border border-slate-200/80 dark:border-slate-800 lg:col-span-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-600 dark:bg-indigo-950 dark:text-indigo-300 flex items-center justify-center font-bold text-lg">
+                    📊
+                </div>
+                <div>
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">10. Hiring Telemetry & Funnel Analytics</h3>
+                    <p class="text-xs text-slate-500">End-to-end recruitment funnel performance</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center text-xs">
+                <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800">
+                    <span class="block text-2xl font-black text-slate-900 dark:text-white">{{ hiring_analytics.total_applicants }}</span>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Received</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50">
+                    <span class="block text-2xl font-black text-indigo-600 dark:text-indigo-400">{{ hiring_analytics.shortlisted_count }}</span>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Shortlisted</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-purple-50 dark:bg-purple-950/50">
+                    <span class="block text-2xl font-black text-purple-600 dark:text-purple-400">{{ hiring_analytics.interviewing_count }}</span>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Interviewing</span>
+                </div>
+                <div class="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50">
+                    <span class="block text-2xl font-black text-emerald-600 dark:text-emerald-400">{{ hiring_analytics.hired_count }}</span>
+                    <span class="text-[10px] font-bold text-slate-500 uppercase">Hired Offers</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Manage Users | HireHub Admin{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-6 rounded-3xl shadow-xl flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white">User Accounts Manager</h1>
+            <p class="text-xs text-slate-500">Manage user authorization status, verify accounts, or revoke platform access.</p>
+        </div>
+    </div>
+
+    <div class="glass-card rounded-3xl overflow-hidden shadow-xl border border-slate-200/80 dark:border-slate-800">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-100/80 dark:bg-slate-800/80 text-[11px] font-extrabold uppercase tracking-wider text-slate-400 border-b border-slate-200 dark:border-slate-800">
+                        <th class="p-4 min-w-[150px]">User</th>
+                        <th class="p-4 min-w-[120px]">Role</th>
+                        <th class="p-4 min-w-[180px]">Email</th>
+                        <th class="p-4 min-w-[120px]">Verified</th>
+                        <th class="p-4 text-right min-w-[220px]">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                    {% for u in users %}
+                    <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition">
+                        <td class="p-4 font-bold text-slate-900 dark:text-white">{{ u.username }}</td>
+                        <td class="p-4 capitalize text-indigo-600 dark:text-indigo-400 font-bold">{{ u.get_role_display }}</td>
+                        <td class="p-4 text-slate-600 dark:text-slate-300">{{ u.email }}</td>
+                        <td class="p-4 whitespace-nowrap">
+                            {% if u.is_verified %}
+                            <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 font-bold text-[10px] uppercase tracking-wide">Verified</span>
+                            {% else %}
+                            <span class="px-3 py-1 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300 font-bold text-[10px] uppercase tracking-wide">Unverified</span>
+                            {% endif %}
+                        </td>
+                        <td class="p-4 text-right whitespace-nowrap">
+                            <div class="inline-flex items-center justify-end gap-2 flex-nowrap">
+                                <a href="{% url 'admin_user_action' u.id 'verify' %}" class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-bold text-[11px] hover:bg-emerald-700 shadow-sm transition inline-flex items-center gap-1.5">
+                                    <i class="fa-solid fa-user-check"></i> Verify
+                                </a>
+                                <a href="{% url 'admin_user_action' u.id 'ban' %}" class="px-3 py-1.5 rounded-xl {% if u.is_active %}bg-rose-600 hover:bg-rose-700{% else %}bg-amber-600 hover:bg-amber-700{% endif %} text-white font-bold text-[11px] shadow-sm transition inline-flex items-center gap-1.5">
+                                    <i class="fa-solid {% if u.is_active %}fa-ban{% else %}fa-user-plus{% endif %}"></i> {% if u.is_active %}Ban User{% else %}Unban User{% endif %}
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

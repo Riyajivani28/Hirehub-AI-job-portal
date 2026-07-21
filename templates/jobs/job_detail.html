@@ -1,0 +1,151 @@
+{% extends 'base/base.html' %}
+
+{% block title %}{{ job.title }} at {{ job.company.name }} | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Job Banner Header -->
+        <div class="glass-card p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="flex items-start space-x-5">
+                <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 text-white font-black text-3xl flex items-center justify-center shadow-lg">
+                    {{ job.company.name|slice:":1" }}
+                </div>
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300">
+                            {{ job.get_job_type_display }}
+                        </span>
+                        <span class="text-xs text-slate-400">&bull;</span>
+                        <span class="text-xs text-slate-500"><i class="fa-solid fa-eye mr-1"></i>{{ job.views_count }} Views</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{{ job.title }}</h1>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 font-medium">
+                        <a href="{% url 'company_detail' job.company.id %}" class="hover:text-indigo-600 font-bold">{{ job.company.name }}</a>
+                        &bull; <i class="fa-solid fa-location-dot text-rose-500 ml-1"></i> {{ job.location }}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Apply & Save actions -->
+            <div class="flex items-center space-x-4 w-full md:w-auto">
+                <a href="{% url 'toggle_save_job' job.id %}" class="w-12 h-12 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-rose-500 transition {% if is_saved %}bg-rose-50 border-rose-200 text-rose-600{% endif %}" title="Save Job">
+                    <i class="fa-solid fa-bookmark text-lg"></i>
+                </a>
+
+                {% if has_applied %}
+                <button disabled class="flex-1 md:flex-none px-8 py-3.5 rounded-2xl bg-emerald-500/20 text-emerald-600 font-bold text-sm border border-emerald-500/30 cursor-not-allowed">
+                    <i class="fa-solid fa-circle-check mr-2"></i>Application Submitted
+                </button>
+                {% else %}
+                <a href="{% url 'apply_job' job.id %}" class="flex-1 md:flex-none px-8 py-3.5 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:opacity-95 text-white font-bold text-sm shadow-xl shadow-indigo-500/25 transition text-center">
+                    <i class="fa-solid fa-paper-plane mr-2"></i>Apply Now
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Main Job Content -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Overview Stats Grid -->
+                <div class="glass-card p-6 rounded-3xl grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                    <div>
+                        <span class="text-xs text-slate-400 font-bold uppercase block">Salary Package</span>
+                        <span class="font-extrabold text-slate-900 dark:text-white text-base">₹{{ job.salary_min|floatformat:0 }} - ₹{{ job.salary_max|floatformat:0 }}</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 font-bold uppercase block">Experience</span>
+                        <span class="font-extrabold text-slate-900 dark:text-white text-base">{{ job.experience_required }}</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 font-bold uppercase block">Qualification</span>
+                        <span class="font-extrabold text-slate-900 dark:text-white text-base">{{ job.qualification }}</span>
+                    </div>
+                    <div>
+                        <span class="text-xs text-slate-400 font-bold uppercase block">Application Deadline</span>
+                        <span class="font-extrabold text-slate-900 dark:text-white text-base">{{ job.deadline|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Role Overview & Context</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ job.description }}</p>
+                </div>
+
+                <!-- Key Responsibilities -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Key Responsibilities</h3>
+                    <div class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line pl-4 border-l-2 border-indigo-500">
+                        {{ job.responsibilities }}
+                    </div>
+                </div>
+
+                <!-- Skills Required -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Technical Skill Stack Required</h3>
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in job.get_skills_list %}
+                        <span class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 text-xs font-bold border border-indigo-200 dark:border-indigo-800">
+                            <i class="fa-solid fa-check text-xs mr-1.5"></i>{{ skill }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <span class="text-xs text-slate-500">Want to check your fit for this role?</span>
+                        <a href="{% url 'ai_skill_gap' %}?job_id={{ job.id }}" class="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                            <i class="fa-solid fa-wand-magic-sparkles mr-1"></i>Run AI Skill Gap Analysis &rarr;
+                        </a>
+                    </div>
+                </div>
+
+                {% if job.benefits %}
+                <!-- Benefits -->
+                <div class="glass-card p-8 rounded-3xl space-y-4">
+                    <h3 class="text-xl font-bold text-slate-900 dark:text-white">Perks & Benefits</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">{{ job.benefits }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Sidebar Details -->
+            <div class="space-y-6">
+                <!-- Company Info Card -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base border-b border-slate-100 dark:border-slate-800 pb-3">About Employer</h4>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white font-bold flex items-center justify-center text-xl">
+                            {{ job.company.name|slice:":1" }}
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-slate-900 dark:text-white text-sm">{{ job.company.name }}</h5>
+                            <span class="text-xs text-slate-500">{{ job.company.industry }}</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">{{ job.company.description }}</p>
+                    <a href="{% url 'company_detail' job.company.id %}" class="block text-center px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+                        View Company Profile
+                    </a>
+                </div>
+
+                <!-- Similar Jobs Card -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <h4 class="font-bold text-slate-900 dark:text-white text-base border-b border-slate-100 dark:border-slate-800 pb-3">Similar Vacancies</h4>
+                    <div class="space-y-4">
+                        {% for sim in similar_jobs %}
+                        <a href="{% url 'job_detail' sim.id %}" class="block p-3 rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition">
+                            <h5 class="font-bold text-sm text-slate-900 dark:text-white truncate">{{ sim.title }}</h5>
+                            <p class="text-xs text-slate-500">{{ sim.company.name }} &bull; {{ sim.location }}</p>
+                        </a>
+                        {% empty %}
+                        <p class="text-xs text-slate-400">No other jobs in this category currently.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

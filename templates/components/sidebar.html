@@ -1,0 +1,179 @@
+<aside class="w-full lg:w-64 bg-[#111111] backdrop-blur-xl border border-[#2C2C2C] rounded-3xl p-5 shadow-2xl space-y-6 flex flex-col justify-between min-h-[calc(100vh-2rem)] sticky top-4">
+    <div class="space-y-6">
+        <!-- Brand Header -->
+        <div class="flex items-center justify-between pb-4 border-b border-[#2C2C2C]">
+            <a href="{% url 'home' %}" class="flex items-center space-x-2.5">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#D4AF37] via-[#F4C430] to-[#AA7C11] flex items-center justify-center text-black shadow-lg shadow-[#D4AF37]/20">
+                    <i class="fa-solid fa-briefcase text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-lg font-black tracking-tight text-white">Hire<span class="text-[#D4AF37]">Hub</span></span>
+                    <span class="block text-[9px] font-bold text-[#D4AF37] uppercase tracking-widest">Dashboard</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- User Profile Card -->
+        <div class="bg-[#171717] p-3.5 rounded-2xl border border-[#2C2C2C] flex items-center space-x-3">
+            <div class="relative">
+                <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-[#D4AF37] to-[#AA7C11] flex items-center justify-center text-black font-extrabold text-sm shadow-md">
+                    {% if user.avatar %}
+                        <img src="{{ user.avatar.url }}" class="w-11 h-11 rounded-xl object-cover" alt="Profile">
+                    {% else %}
+                        {{ user.username|slice:":2"|upper }}
+                    {% endif %}
+                </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-[#D4AF37] border-2 border-[#111111] rounded-full"></span>
+            </div>
+            <div class="flex-1 min-w-0">
+                <h4 class="font-bold text-white text-xs truncate">{{ user.get_full_name|default:user.username }}</h4>
+                <p class="text-[10px] text-[#D4AF37] font-semibold uppercase tracking-wider">{{ user.get_role_display }}</p>
+            </div>
+        </div>
+
+        <!-- Main Navigation Sections -->
+        <div class="space-y-1 text-xs font-semibold">
+            <p class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-slate-400 mb-1.5">Main Navigation</p>
+            
+            <a href="{% url 'dashboard_redirect' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'jobseeker_dashboard' or request.resolver_match.url_name == 'employer_dashboard' or request.resolver_match.url_name == 'admin_dashboard' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-gauge-high w-4 {% if request.resolver_match.url_name == 'jobseeker_dashboard' or request.resolver_match.url_name == 'employer_dashboard' or request.resolver_match.url_name == 'admin_dashboard' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Dashboard Overview</span>
+            </a>
+
+            {% if user.is_jobseeker %}
+            <a href="{% url 'profile' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'profile_edit' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-regular fa-id-card w-4 {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'profile_edit' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>My Profile & Resume</span>
+            </a>
+            <a href="{% url 'my_applications' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'my_applications' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-paper-plane w-4 {% if request.resolver_match.url_name == 'my_applications' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Applied Jobs</span>
+            </a>
+            <a href="{% url 'notification_list' %}" class="flex items-center justify-between px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'notification_list' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <div class="flex items-center space-x-3">
+                    <i class="fa-solid fa-bell w-4 {% if request.resolver_match.url_name == 'notification_list' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                    <span>Notifications</span>
+                </div>
+                {% if unread_notifications_count > 0 %}
+                    <span class="px-2 py-0.5 rounded-full bg-[#D4AF37] text-black text-[9px] font-black">{{ unread_notifications_count }}</span>
+                {% endif %}
+            </a>
+            {% elif user.is_employer %}
+            <a href="{% url 'post_job' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'post_job' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-circle-plus w-4 {% if request.resolver_match.url_name == 'post_job' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Post Job Vacancy</span>
+            </a>
+            <a href="{% url 'employer_applications' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'employer_applications' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-users-viewfinder w-4 {% if request.resolver_match.url_name == 'employer_applications' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Manage Applicants</span>
+            </a>
+            <a href="{% url 'company_edit' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'company_edit' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-building w-4 {% if request.resolver_match.url_name == 'company_edit' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Company Settings</span>
+            </a>
+            {% elif user.is_site_admin %}
+            <a href="{% url 'admin_users' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'admin_users' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-user-gear w-4 {% if request.resolver_match.url_name == 'admin_users' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>User Moderation</span>
+            </a>
+            <a href="{% url 'admin_companies' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'admin_companies' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-city w-4 {% if request.resolver_match.url_name == 'admin_companies' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Company Verification</span>
+            </a>
+            <a href="{% url 'admin_jobs' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'admin_jobs' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-list-check w-4 {% if request.resolver_match.url_name == 'admin_jobs' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Manage Job Posts</span>
+            </a>
+            <a href="{% url 'admin_announcements' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'admin_announcements' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-bullhorn w-4 {% if request.resolver_match.url_name == 'admin_announcements' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Announcements</span>
+            </a>
+            <a href="{% url 'admin_reports' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'admin_reports' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-chart-pie w-4 {% if request.resolver_match.url_name == 'admin_reports' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>System Analytics</span>
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- AI Suite Menu -->
+        <div class="space-y-1 text-xs font-semibold pt-3 border-t border-[#2C2C2C]">
+            <p class="px-3 text-[10px] font-extrabold uppercase tracking-widest text-[#D4AF37] mb-1.5 flex items-center justify-between">
+                <span>AI Innovation Suite</span>
+                <i class="fa-solid fa-sparkles text-[10px] text-[#D4AF37]"></i>
+            </p>
+
+            {% if user.is_jobseeker %}
+            <a href="{% url 'seeker_ai_hub' %}" class="flex items-center space-x-3 px-3 py-2.5 rounded-xl transition {% if request.resolver_match.url_name == 'seeker_ai_hub' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-robot w-4 {% if request.resolver_match.url_name == 'seeker_ai_hub' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Job Seeker AI Suite Hub</span>
+            </a>
+            {% endif %}
+
+            {% if user.is_jobseeker %}
+            <a href="{% url 'ai_ats_score' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_ats_score' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-gauge-high w-4 {% if request.resolver_match.url_name == 'ai_ats_score' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>ATS Resume Score</span>
+            </a>
+            <a href="{% url 'ai_resume_analyzer' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_resume_analyzer' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-file-invoice w-4 {% if request.resolver_match.url_name == 'ai_resume_analyzer' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Resume Strength Scan</span>
+            </a>
+            <a href="{% url 'ai_job_recommendation' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_job_recommendation' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-wand-magic-sparkles w-4 {% if request.resolver_match.url_name == 'ai_job_recommendation' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>AI Job Match</span>
+            </a>
+            <a href="{% url 'ai_skill_gap' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_skill_gap' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-sliders w-4 {% if request.resolver_match.url_name == 'ai_skill_gap' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Skill Roadmap</span>
+            </a>
+            <a href="{% url 'ai_interview_generator' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_interview_generator' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-circle-question w-4 {% if request.resolver_match.url_name == 'ai_interview_generator' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Interview Kit Prep</span>
+            </a>
+            <a href="{% url 'ai_career_chatbot' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_career_chatbot' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-comments w-4 {% if request.resolver_match.url_name == 'ai_career_chatbot' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>AI Career Mentor</span>
+            </a>
+            {% elif user.is_employer %}
+            <a href="{% url 'employer_ai_hub' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'employer_ai_hub' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-wand-magic-sparkles w-4 {% if request.resolver_match.url_name == 'employer_ai_hub' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Employer AI Suite Hub</span>
+            </a>
+            <a href="{% url 'ai_smart_matching' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_smart_matching' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-ranking-star w-4 {% if request.resolver_match.url_name == 'ai_smart_matching' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Candidate Match Matrix</span>
+            </a>
+            <a href="{% url 'ai_interview_generator' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'ai_interview_generator' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-clipboard-question w-4 {% if request.resolver_match.url_name == 'ai_interview_generator' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Interview Kit Generator</span>
+            </a>
+            {% elif user.is_site_admin %}
+            <a href="{% url 'admin_ai_hub' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl transition {% if request.resolver_match.url_name == 'admin_ai_hub' %}bg-gradient-to-r from-[#D4AF37] to-[#AA7C11] text-black font-bold shadow-md shadow-[#D4AF37]/20{% else %}hover:bg-[#171717] text-slate-300 hover:text-[#D4AF37]{% endif %}">
+                <i class="fa-solid fa-shield-cat w-4 {% if request.resolver_match.url_name == 'admin_ai_hub' %}text-black{% else %}text-[#D4AF37]{% endif %}"></i>
+                <span>Admin AI Control Hub</span>
+            </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Account Actions & Logout -->
+    <div class="pt-4 border-t border-[#2C2C2C] space-y-2 text-xs font-semibold">
+        <button type="button" onclick="toggleTheme()" class="w-full flex items-center space-x-3 px-3 py-2 rounded-xl bg-slate-100 dark:bg-[#171717] border border-slate-200 dark:border-[#2C2C2C] text-slate-700 dark:text-slate-300 hover:text-[#D4AF37] transition text-left">
+            <i class="fa-solid fa-circle-half-stroke w-4 text-[#D4AF37]"></i>
+            <span>Toggle Theme Mode</span>
+        </button>
+
+        <a href="{% url 'home' %}" class="flex items-center space-x-3 px-3 py-2 rounded-xl hover:bg-[#171717] text-slate-400 hover:text-[#D4AF37] transition">
+            <i class="fa-solid fa-globe w-4 text-[#D4AF37]"></i>
+            <span>Browse Public Portal</span>
+        </a>
+        
+        <form method="post" action="{% url 'logout' %}" class="w-full">
+            {% csrf_token %}
+            <button type="submit" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl bg-[#171717] border border-rose-950 text-rose-400 font-bold hover:bg-rose-950/40 transition text-left">
+                <i class="fa-solid fa-arrow-right-from-bracket w-4"></i>
+                <span>Log Out</span>
+            </button>
+        </form>
+    </div>
+</aside>

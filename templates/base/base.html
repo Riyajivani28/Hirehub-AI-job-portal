@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HireHub - AI Powered Full Stack Job Portal{% endblock %}</title>
+    <meta name="description" content="HireHub is a modern full stack job portal powered by Django and AI. Discover top jobs, ATS resume scoring, smart candidate matching, and automated interview scheduling.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        gold: {
+                            50: '#FAF6E6',
+                            100: '#F3E9C1',
+                            200: '#EAD494',
+                            300: '#E0BE67',
+                            400: '#F4C430',
+                            500: '#D4AF37', // Primary Gold Accent
+                            600: '#C59B27',
+                            700: '#A37E1C',
+                            800: '#7B5D12',
+                            900: '#523C09',
+                            DEFAULT: '#D4AF37',
+                            hover: '#F4C430',
+                        },
+                        dark: {
+                            primary: '#0B0B0B',
+                            secondary: '#171717',
+                            sidebar: '#111111',
+                            navbar: '#111111',
+                            panel: '#171717',
+                            border: '#2C2C2C',
+                        },
+                        indigo: {
+                            50: '#FAF6E6',
+                            100: '#F3E9C1',
+                            200: '#EAD494',
+                            300: '#E0BE67',
+                            400: '#F4C430',
+                            500: '#D4AF37',
+                            600: '#D4AF37',
+                            700: '#C59B27',
+                            800: '#A37E1C',
+                            900: '#171717',
+                            950: '#0B0B0B',
+                        },
+                        purple: {
+                            50: '#FAF6E6',
+                            400: '#F4C430',
+                            500: '#D4AF37',
+                            600: '#D4AF37',
+                            900: '#171717',
+                        },
+                        slate: {
+                            50: '#0B0B0B',
+                            100: '#111111',
+                            200: '#2C2C2C',
+                            300: '#404040',
+                            400: '#9CA3AF',
+                            500: '#D1D5DB',
+                            600: '#E5E7EB',
+                            700: '#F3F4F6',
+                            800: '#171717',
+                            900: '#111111',
+                            950: '#0B0B0B',
+                        }
+                    },
+                    boxShadow: {
+                        'gold': '0 10px 25px -5px rgba(212, 175, 55, 0.25), 0 8px 10px -6px rgba(212, 175, 55, 0.1)',
+                        'gold-glow': '0 0 20px rgba(212, 175, 55, 0.35)',
+                        'gold-sm': '0 4px 12px rgba(212, 175, 55, 0.15)',
+                        'dark-card': '0 10px 30px rgba(0, 0, 0, 0.6)',
+                    },
+                    borderRadius: {
+                        '2xl': '16px',
+                        '3xl': '20px',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Theme Initialization Script -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        })();
+
+        function toggleTheme() {
+            const htmlElement = document.documentElement;
+            const icon = document.getElementById('themeToggleIcon');
+            if (htmlElement.classList.contains('dark')) {
+                htmlElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                if (icon) {
+                    icon.className = 'fa-solid fa-sun text-amber-500 text-lg';
+                }
+            } else {
+                htmlElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                if (icon) {
+                    icon.className = 'fa-solid fa-moon text-[#D4AF37] text-lg';
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const icon = document.getElementById('themeToggleIcon');
+            if (icon) {
+                if (document.documentElement.classList.contains('dark')) {
+                    icon.className = 'fa-solid fa-moon text-[#D4AF37] text-lg';
+                } else {
+                    icon.className = 'fa-solid fa-sun text-amber-500 text-lg';
+                }
+            }
+        });
+    </script>
+
+    <style>
+        /* Base Light Mode Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+            color: #0F172A;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid #E2E8F0;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.5);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.1), 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Light Mode Global Overrides for Theme Classes */
+        html:not(.dark) {
+            color-scheme: light;
+        }
+        html:not(.dark) body {
+            background-color: #F8FAFC !important;
+            color: #1E293B !important;
+        }
+        html:not(.dark) .bg-\[\#0B0B0B\],
+        html:not(.dark) .bg-slate-950 {
+            background-color: #F8FAFC !important;
+        }
+        html:not(.dark) .bg-\[\#111111\] {
+            background-color: #FFFFFF !important;
+        }
+        html:not(.dark) .bg-\[\#171717\],
+        html:not(.dark) .bg-slate-900 {
+            background-color: #F1F5F9 !important;
+        }
+        html:not(.dark) .border-\[\#2C2C2C\],
+        html:not(.dark) .border-slate-800,
+        html:not(.dark) .border-slate-700 {
+            border-color: #E2E8F0 !important;
+        }
+        html:not(.dark) .text-white {
+            color: #0F172A !important;
+        }
+        html:not(.dark) .text-slate-300,
+        html:not(.dark) .text-slate-400 {
+            color: #475569 !important;
+        }
+
+        /* Dark Mode Overrides */
+        html.dark {
+            color-scheme: dark;
+        }
+        html.dark body {
+            background-color: #0B0B0B !important;
+            color: #D1D5DB !important;
+        }
+        html.dark h1, html.dark h2, html.dark h3, html.dark h4, html.dark h5, html.dark h6 {
+            color: #FFFFFF !important;
+        }
+        html.dark .glass-card {
+            background: rgba(23, 23, 23, 0.85) !important;
+            backdrop-filter: blur(16px);
+            border: 1px solid #2C2C2C !important;
+            border-radius: 16px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+        html.dark .glass-card:hover {
+            border-color: rgba(212, 175, 55, 0.3) !important;
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+        html.dark .bg-\[\#0B0B0B\] {
+            background-color: #0B0B0B !important;
+        }
+        html.dark .bg-\[\#111111\] {
+            background-color: #111111 !important;
+        }
+        html.dark .bg-\[\#171717\] {
+            background-color: #171717 !important;
+        }
+        html.dark .border-\[\#2C2C2C\] {
+            border-color: #2C2C2C !important;
+        }
+        html.dark .text-white {
+            color: #FFFFFF !important;
+        }
+        html.dark .text-slate-300 {
+            color: #D1D5DB !important;
+        }
+        html.dark .text-slate-400 {
+            color: #9CA3AF !important;
+        }
+
+        /* Global Inputs, Selects & Textareas - Light Mode */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="date"],
+        input[type="url"],
+        input[type="file"],
+        select,
+        textarea {
+            background-color: #FFFFFF;
+            border: 1px solid #CBD5E1;
+            color: #0F172A;
+            border-radius: 12px;
+            transition: all 0.2s ease-in-out;
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: #94A3B8;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="url"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #D4AF37 !important;
+            outline: none !important;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.25) !important;
+        }
+
+        /* Dark Mode Inputs */
+        .dark input[type="text"],
+        .dark input[type="email"],
+        .dark input[type="password"],
+        .dark input[type="number"],
+        .dark input[type="date"],
+        .dark input[type="url"],
+        .dark input[type="file"],
+        .dark select,
+        .dark textarea {
+            background-color: #171717 !important;
+            border: 1px solid #2C2C2C !important;
+            color: #FFFFFF !important;
+        }
+        .dark input::placeholder,
+        .dark textarea::placeholder {
+            color: #6B7280 !important;
+        }
+
+        /* Table Styling - Light & Dark */
+        table {
+            border-collapse: separate !important;
+            border-spacing: 0 !important;
+            width: 100%;
+        }
+        thead th {
+            background-color: #F1F5F9;
+            color: #B45309;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #E2E8F0;
+            padding: 1rem;
+        }
+        tbody td {
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #E2E8F0;
+            color: #334155;
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+        tbody tr:hover td {
+            background-color: #F8FAFC;
+        }
+
+        .dark thead th {
+            background-color: #111111 !important;
+            color: #D4AF37 !important;
+            border-bottom: 1px solid #2C2C2C !important;
+        }
+        .dark tbody td {
+            background-color: #171717 !important;
+            border-bottom: 1px solid #2C2C2C !important;
+            color: #D1D5DB !important;
+        }
+        .dark tbody tr:hover td {
+            background-color: #1F1F1F !important;
+        }
+
+        /* Badges & Accent Buttons */
+        .gold-badge {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(244, 196, 48, 0.05) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #D4AF37;
+        }
+        .gold-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            color: #000000 !important;
+            font-weight: 700;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25);
+        }
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #F4C430 0%, #D4AF37 100%);
+            box-shadow: 0 6px 20px rgba(244, 196, 48, 0.4);
+            transform: translateY(-1px);
+        }
+        .gold-border {
+            border-color: #2C2C2C !important;
+        }
+        .gold-border-accent {
+            border-color: #D4AF37 !important;
+        }
+        .gold-text {
+            color: #D4AF37 !important;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0B0B;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2C2C2C;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-[#0B0B0B] text-[#D1D5DB] min-h-screen flex flex-col antialiased selection:bg-[#D4AF37] selection:text-black transition-colors duration-300">
+
+    {% block navbar %}
+        {% include 'components/navbar.html' %}
+    {% endblock %}
+
+    {% include 'components/alerts.html' %}
+
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block footer %}
+        {% include 'components/footer.html' %}
+    {% endblock %}
+
+    <!-- Theme Switcher Script -->
+    <script>
+        const themeBtn = document.getElementById('themeToggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        }
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

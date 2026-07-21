@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Edit {{ job.title }} | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+            <div>
+                <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Manage Opening</span>
+                <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">Edit Job Details: {{ job.title }}</h1>
+            </div>
+
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Job Title *</label>
+                        {{ form.title }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Department</label>
+                        {{ form.department }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Category Sector *</label>
+                        {{ form.category }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Job Type *</label>
+                        {{ form.job_type }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Vacancy Count *</label>
+                        {{ form.vacancy }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Location *</label>
+                        {{ form.location }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Min Salary (INR)</label>
+                        {{ form.salary_min }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Max Salary (INR)</label>
+                        {{ form.salary_max }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Experience Required *</label>
+                        {{ form.experience_required }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Qualification *</label>
+                        {{ form.qualification }}
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Required Technical Skills *</label>
+                        {{ form.skills_required }}
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Application Deadline *</label>
+                        {{ form.deadline }}
+                    </div>
+                    <div class="flex items-center space-x-2 pt-6">
+                        {{ form.salary_negotiable }}
+                        <label class="text-sm font-medium text-slate-700 dark:text-slate-300">Salary Negotiable</label>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Job Description *</label>
+                    {{ form.description }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Key Responsibilities *</label>
+                    {{ form.responsibilities }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Perks & Benefits</label>
+                    {{ form.benefits }}
+                </div>
+
+                <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-4">
+                    <a href="{% url 'employer_dashboard' %}" class="px-6 py-3 rounded-xl border border-slate-300 dark:border-slate-700 text-sm font-bold text-slate-600 dark:text-slate-300">Cancel</a>
+                    <button type="submit" class="px-8 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-lg">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

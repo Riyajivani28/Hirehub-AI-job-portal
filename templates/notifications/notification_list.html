@@ -1,0 +1,55 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Notifications & Alerts | HireHub{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-6 rounded-3xl shadow-xl flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-black text-slate-900 dark:text-white">Notifications Center</h1>
+            <p class="text-xs text-slate-500 font-medium">Stay updated on application progress, resume views, and interview calls.</p>
+        </div>
+        
+        {% if unread_count > 0 %}
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" name="mark_all_read" class="px-4 py-2 rounded-xl bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-bold text-xs hover:bg-indigo-100">
+                Mark All As Read
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    <div class="space-y-3">
+        {% for n in notifications %}
+        <div class="glass-card p-5 rounded-2xl flex items-start justify-between gap-4 transition {% if not n.is_read %}border-l-4 border-indigo-600 bg-indigo-50/40 dark:bg-indigo-950/20{% endif %}">
+            <div class="flex items-start space-x-3.5">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white text-lg flex-shrink-0
+                    {% if n.notification_type == 'interview_scheduled' %}bg-indigo-600
+                    {% elif n.notification_type == 'offer_received' %}bg-emerald-600
+                    {% elif n.notification_type == 'resume_viewed' %}bg-amber-500
+                    {% else %}bg-purple-600{% endif %}">
+                    <i class="fa-solid {% if n.notification_type == 'interview_scheduled' %}fa-calendar-check{% elif n.notification_type == 'offer_received' %}fa-gift{% elif n.notification_type == 'resume_viewed' %}fa-eye{% else %}fa-bell{% endif %}"></i>
+                </div>
+                <div class="space-y-1">
+                    <div class="flex items-center space-x-2">
+                        <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ n.title }}</h4>
+                        <span class="text-[10px] text-slate-400 font-medium">&bull; {{ n.created_at|timesince }} ago</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{{ n.message }}</p>
+                </div>
+            </div>
+
+            {% if not n.is_read %}
+            <a href="{% url 'mark_notification_read' n.id %}" class="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline">Mark Read</a>
+            {% endif %}
+        </div>
+        {% empty %}
+        <div class="glass-card p-12 text-center rounded-3xl space-y-2">
+            <i class="fa-regular fa-bell-slash text-3xl text-slate-400"></i>
+            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">You have no notifications yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

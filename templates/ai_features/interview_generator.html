@@ -1,0 +1,117 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Interview Question Kit Builder | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-pink-600 dark:text-pink-400">Interview Readiness</span>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">AI Interview Preparation Generator</h1>
+            <p class="text-xs text-slate-500">Generate targeted technical, situational, and behavioral interview questions with model answer guidelines.</p>
+        </div>
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Select Active Job Opening (Loaded from Database)</label>
+                <select name="job_id" id="jobSelect" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white font-semibold">
+                    {% if active_jobs %}
+                    <option value="" data-title="">-- Select Active Job Opening --</option>
+                    {% for j in active_jobs %}
+                    <option value="{{ j.id }}" data-title="{{ j.title }}" {% if selected_job_id == j.id|stringformat:"s" %}selected{% endif %}>
+                        {{ j.title }} — {{ j.company.name }} ({{ j.location }} &bull; {{ j.get_job_type_display }})
+                    </option>
+                    {% endfor %}
+                    {% else %}
+                    <option value="" disabled selected>No Active Job Openings Available</option>
+                    {% endif %}
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Role Title *</label>
+                    <input type="text" name="role_title" id="roleTitleInput" value="{{ role_title }}" required placeholder="e.g. Senior Backend Developer" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Seniority Level *</label>
+                    <select name="experience_level" class="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/70 text-sm dark:text-white">
+                        <option value="entry" {% if experience_level == 'entry' %}selected{% endif %}>Entry / Graduate Level</option>
+                        <option value="mid" {% if experience_level == 'mid' or not experience_level %}selected{% endif %}>Mid Senior (2-5 Years)</option>
+                        <option value="senior" {% if experience_level == 'senior' %}selected{% endif %}>Lead / Senior Staff (5+ Years)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-2xl bg-pink-600 hover:bg-pink-700 text-white font-bold text-sm shadow-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-sparkles"></i>
+                <span>Build AI Interview Preparation Kit</span>
+            </button>
+        </form>
+
+        {% if questions_kit %}
+        <div class="pt-6 border-t border-slate-200 dark:border-slate-800 space-y-6">
+            <div class="flex justify-between items-center">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Generated Interview Kit for {{ role_title }}</h3>
+                <button onclick="window.print()" class="px-4 py-2 rounded-xl bg-slate-900 text-white text-xs font-bold">Print Kit</button>
+            </div>
+
+            <!-- Technical Questions -->
+            <div class="space-y-4">
+                <h4 class="font-bold text-sm text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">Part 1: Technical Core Questions</h4>
+                <div class="space-y-3">
+                    {% for q in questions_kit.technical %}
+                    <div class="p-5 rounded-2xl bg-indigo-50/50 dark:bg-indigo-950/30 border border-indigo-200/70 dark:border-indigo-900 space-y-2">
+                        <h5 class="font-bold text-sm text-slate-900 dark:text-white flex items-center">
+                            <span class="w-6 h-6 rounded-full bg-indigo-600 text-white text-xs flex items-center justify-center mr-2">Q{{ forloop.counter }}</span>
+                            {{ q.question }}
+                        </h5>
+                        <div class="pl-8 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                            <p><strong class="text-indigo-600 dark:text-indigo-400">Key Focus:</strong> {{ q.key_focus }}</p>
+                            <p><strong class="text-emerald-600 dark:text-emerald-400">Model Framework Answer:</strong> {{ q.sample_answer }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- HR & Behavioral Questions -->
+            <div class="space-y-4 pt-4">
+                <h4 class="font-bold text-sm text-purple-600 dark:text-purple-400 uppercase tracking-wider">Part 2: Behavioral & Cultural Alignment</h4>
+                <div class="space-y-3">
+                    {% for q in questions_kit.behavioral %}
+                    <div class="p-5 rounded-2xl bg-purple-50/50 dark:bg-purple-950/30 border border-purple-200/70 dark:border-purple-900 space-y-2">
+                        <h5 class="font-bold text-sm text-slate-900 dark:text-white flex items-center">
+                            <span class="w-6 h-6 rounded-full bg-purple-600 text-white text-xs flex items-center justify-center mr-2">Q{{ forloop.counter }}</span>
+                            {{ q.question }}
+                        </h5>
+                        <div class="pl-8 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                            <p><strong class="text-purple-600 dark:text-purple-400">STAR Method Tip:</strong> {{ q.star_tip }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobSelect = document.getElementById('jobSelect');
+        const roleTitleInput = document.getElementById('roleTitleInput');
+
+        if (jobSelect && roleTitleInput) {
+            jobSelect.addEventListener('change', function() {
+                const selectedOpt = jobSelect.options[jobSelect.selectedIndex];
+                const title = selectedOpt.getAttribute('data-title');
+                if (title) {
+                    roleTitleInput.value = title;
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

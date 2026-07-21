@@ -1,0 +1,57 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Top Hiring Employers & Companies | HireHub{% endblock %}
+
+{% block content %}
+<div class="py-10 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <!-- Header -->
+        <div class="glass-card p-8 rounded-3xl shadow-xl space-y-4">
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white">Enterprise Employer Directory</h1>
+            <p class="text-xs text-slate-500 max-w-xl">Discover verified industry leaders, technology studios, and enterprise corporations hiring on HireHub.</p>
+            
+            <form method="GET" class="flex flex-col sm:flex-row gap-4 pt-2">
+                <input type="text" name="q" value="{{ search_q }}" placeholder="Search company name..." class="flex-1 px-4 py-3 rounded-2xl bg-slate-100 dark:bg-slate-800 border-0 text-sm dark:text-white">
+                <button type="submit" class="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm">
+                    Search Directory
+                </button>
+            </form>
+        </div>
+
+        <!-- Directory Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for comp in companies %}
+            <div class="glass-card p-6 rounded-3xl space-y-4 flex flex-col justify-between hover:shadow-2xl transition duration-300">
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white font-black text-2xl flex items-center justify-center shadow-lg">
+                            {{ comp.name|slice:":1" }}
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-1.5">
+                                <h3 class="font-bold text-base text-slate-900 dark:text-white">{{ comp.name }}</h3>
+                                {% if comp.is_verified_badge %}
+                                <i class="fa-solid fa-circle-check text-indigo-500 text-sm" title="Verified Badge"></i>
+                                {% endif %}
+                            </div>
+                            <p class="text-xs text-slate-500">{{ comp.industry }} &bull; {{ comp.city }}</p>
+                        </div>
+                    </div>
+
+                    <p class="text-xs text-slate-600 dark:text-slate-300 line-clamp-3 leading-relaxed">{{ comp.description }}</p>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-950/60 px-3 py-1 rounded-full">
+                        {{ comp.active_jobs_count }} Active Jobs
+                    </span>
+                    <a href="{% url 'company_detail' comp.id %}" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-800 hover:bg-indigo-600 text-white text-xs font-bold transition">
+                        View Profile &rarr;
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

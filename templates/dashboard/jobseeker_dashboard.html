@@ -1,0 +1,150 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Job Seeker Command Dashboard | HireHub AI{% endblock %}
+
+{% block dashboard_content %}
+<!-- Welcome Banner -->
+                <div class="rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 p-8 text-white shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-2">
+                        <span class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold uppercase">Job Seeker Dashboard</span>
+                        <h1 class="text-3xl font-black">Welcome Back, {{ user.first_name|default:user.username }}!</h1>
+                        <p class="text-xs text-white/80">Track candidate progress, optimize ATS resume metrics, and apply to AI matched vacancies.</p>
+                    </div>
+                    <a href="{% url 'ai_ats_score' %}" class="px-6 py-3 rounded-2xl bg-white text-indigo-700 font-bold text-xs shadow-lg hover:bg-slate-100 transition">
+                        <i class="fa-solid fa-gauge-high mr-1"></i>Run ATS Resume Check
+                    </a>
+                </div>
+
+                <!-- 5 KPI STATISTICS CARDS -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <div class="glass-card p-4 rounded-3xl space-y-1">
+                        <div class="w-9 h-9 rounded-2xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center text-base mb-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.applied_count }}</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Applied Jobs</p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl space-y-1">
+                        <div class="w-9 h-9 rounded-2xl bg-rose-100 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center text-base mb-2">
+                            <i class="fa-solid fa-bookmark"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.saved_count }}</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Saved Jobs</p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl space-y-1">
+                        <div class="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center text-base mb-2">
+                            <i class="fa-solid fa-eye"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.resume_views }}</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Resume Views</p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl space-y-1">
+                        <div class="w-9 h-9 rounded-2xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center text-base mb-2">
+                            <i class="fa-solid fa-phone-volume"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.interview_calls }}</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Interview Calls</p>
+                    </div>
+
+                    <div class="glass-card p-4 rounded-3xl space-y-1 col-span-2 sm:col-span-1">
+                        <div class="w-9 h-9 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-base mb-2">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <span class="text-2xl font-black text-slate-900 dark:text-white">{{ stats.completion_pct }}%</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Profile Completion</p>
+                    </div>
+                </div>
+
+                <!-- APPLICATION ACTIVITY CHART & RECENT APPLICATIONS -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chart -->
+                    <div class="glass-card p-6 rounded-3xl space-y-4">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">Application Activity Graph</h3>
+                        <div class="h-64 relative">
+                            <canvas id="seekerActivityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Applications Table Brief -->
+                    <div class="glass-card p-6 rounded-3xl space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 dark:text-white text-base">Recent Submissions</h3>
+                            <a href="{% url 'my_applications' %}" class="text-xs font-bold text-indigo-600 hover:underline">View All &rarr;</a>
+                        </div>
+                        <div class="space-y-3">
+                            {% for app in recent_applications %}
+                            <div class="p-3 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 flex justify-between items-center text-xs">
+                                <div>
+                                    <h4 class="font-bold text-slate-900 dark:text-white">{{ app.job.title }}</h4>
+                                    <p class="text-slate-500">{{ app.job.company.name }}</p>
+                                </div>
+                                <span class="px-2.5 py-0.5 rounded-full font-bold uppercase text-[10px] 
+                                    {% if app.status == 'selected' %}bg-emerald-100 text-emerald-700
+                                    {% elif app.status == 'interview_scheduled' %}bg-indigo-100 text-indigo-700
+                                    {% else %}bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200{% endif %}">
+                                    {{ app.get_status_display }}
+                                </span>
+                            </div>
+                            {% empty %}
+                            <p class="text-xs text-slate-400 italic">No applications submitted yet.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECOMMENDED JOBS LIST -->
+                <div class="glass-card p-6 rounded-3xl space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-900 dark:text-white text-base">AI Recommended Roles For You</h3>
+                        <a href="{% url 'ai_job_recommendation' %}" class="text-xs font-bold text-indigo-600 hover:underline">Full AI Engine &rarr;</a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {% for j in recommended_jobs %}
+                        <div class="p-4 rounded-2xl bg-slate-100/70 dark:bg-slate-800/70 space-y-3 flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900 dark:text-white">{{ j.title }}</h4>
+                                <p class="text-xs text-slate-500">{{ j.company.name }} &bull; {{ j.location }}</p>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-700">
+                                <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400">₹{{ j.salary_min|floatformat:0 }}</span>
+                                <a href="{% url 'job_detail' j.id %}" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-bold text-xs">Apply</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const ctx = document.getElementById('seekerActivityChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+            datasets: [{
+                label: 'Applications Sent',
+                data: [2, 4, 3, 7, Number("{{ stats.applied_count|default:0 }}")],
+                borderColor: '#6366f1',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { display: false } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+{% endblock %}

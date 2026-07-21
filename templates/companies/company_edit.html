@@ -1,0 +1,78 @@
+{% extends 'base/dashboard_base.html' %}
+
+{% block title %}Manage Company Profile | HireHub{% endblock %}
+
+{% block dashboard_content %}
+<div class="space-y-6">
+    <div class="glass-card p-8 rounded-3xl shadow-2xl space-y-6">
+        <div>
+            <span class="text-xs font-bold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">Employer Profile Settings</span>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white mt-1">Company Profile & Branding</h1>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Company Name *</label>
+                    {{ form.name }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Industry Sector *</label>
+                    {{ form.industry }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Official Website</label>
+                    {{ form.website }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Company Logo</label>
+                    {{ form.logo }}
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Company Description *</label>
+                    {{ form.description }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Office Address *</label>
+                    {{ form.address }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">City *</label>
+                    {{ form.city }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">State</label>
+                    {{ form.state }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Country</label>
+                    {{ form.country }}
+                </div>
+            </div>
+
+            <h3 class="font-bold text-base text-slate-900 dark:text-white pt-4 border-t border-slate-200 dark:border-slate-800">HR Contact Details</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">HR Contact Name *</label>
+                    {{ form.hr_contact_name }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">HR Contact Email *</label>
+                    {{ form.hr_contact_email }}
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">HR Contact Phone *</label>
+                    {{ form.hr_contact_phone }}
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end space-x-4">
+                <button type="submit" class="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-xl">
+                    Save Company Settings
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
